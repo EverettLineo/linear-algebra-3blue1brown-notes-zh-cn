@@ -1,0 +1,241 @@
+% lecture10.tex - 特征向量与特征值
+% 第 10 章: 特征向量与特征值
+
+\chapter{特征向量与特征值}
+\label{ch:eigen}
+
+\begin{abstract}
+特征向量 (eigenvector) 是线性变换只拉伸而不改变其方向的特殊方向。这一概念是线性代数中最重要的思想之一, 在物理学、工程学和数据科学中有着广泛的应用。
+\end{abstract}
+
+% ============================================
+\section{动机: 特殊的向量}
+% ============================================
+
+\begin{intuition}
+当你施加一个线性变换时, 大多数向量都会偏离原来的方向。但有些特殊的向量只被拉伸或压缩, 仍然\textbf{保持在同一条直线上}。
+
+这些特殊的向量称为\textbf{特征向量 (eigenvector)}。
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 变换前
+    \begin{scope}[shift={(0,0)}]
+        \draw[grid] (-2,-2) grid (2,2);
+        \draw[axis] (-2,0) -- (2,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \draw[vector, blue!70, very thick] (0,0) -- (1,0.5) node[right] {$\vv_1$};
+        \draw[vector, red!70, very thick] (0,0) -- (0.5,1) node[above] {$\vv_2$};
+        \draw[vector, green!60!black, very thick] (0,0) -- (-1,1) node[above left] {特征方向!};
+        \node at (0,-2.5) {变换前};
+    \end{scope}
+
+    \draw[-{Stealth}, very thick] (2.5,0) -- (4,0) node[midway, above] {$T$};
+
+    % 变换后
+    \begin{scope}[shift={(6.5,0)}]
+        \draw[blue!20] (-2,-1) -- (0,2) -- (4,2) -- (2,-1) -- cycle;
+        \draw[axis] (-2,0) -- (4,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \draw[vector, blue!70, very thick] (0,0) -- (1.5,1) node[right] {$T(\vv_1)$};
+        \draw[vector, red!70, very thick] (0,0) -- (1.5,1.5) node[above] {$T(\vv_2)$};
+        \draw[vector, green!60!black, very thick] (0,0) -- (-2,2) node[above left] {$2 \times$ 特征方向!};
+        \node at (1,-2.5) {变换后};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{正式定义}
+% ============================================
+
+\begin{definition}[特征向量与特征值]
+非零向量 $\vv$ 是矩阵 $\mA$ 的\vocab{特征向量 (eigenvector)}, 如果:
+\[
+\mA\vv = \lambda\vv
+\]
+对某个标量 $\lambda$ 成立。该标量称为对应的\vocab{特征值 (eigenvalue)}。
+\end{definition}
+
+\begin{intuition}
+$\mA\vv = \lambda\vv$ 的意思是:
+\begin{center}
+``变换 $\mA$ 作用在向量 $\vv$ 上, 就相当于一次标量乘法''
+\end{center}
+向量 $\vv$ 保持在同一条直线上, 只是被 $\lambda$ 缩放了。
+\end{intuition}
+
+\begin{example}
+对于矩阵 $\mA = \twomat{3}{1}{0}{2}$:
+
+向量 $\vv = \twovec{1}{0}$ 是一个特征向量:
+\[
+\mA\vv = \twomat{3}{1}{0}{2}\twovec{1}{0} = \twovec{3}{0} = 3\twovec{1}{0} = 3\vv
+\]
+对应的特征值为: $\lambda = 3$
+\end{example}
+
+% ============================================
+\section{求特征值}
+% ============================================
+
+\begin{theorem}[特征方程]
+$\lambda$ 是 $\mA$ 的特征值当且仅当:
+\[
+\det(\mA - \lambda\mI) = 0
+\]
+\end{theorem}
+
+\begin{proof}
+$\mA\vv = \lambda\vv$ 可写为:
+\[
+\mA\vv - \lambda\vv = \vzero \implies (\mA - \lambda\mI)\vv = \vzero
+\]
+该方程有非零解当且仅当 $\mA - \lambda\mI$ 不可逆, 即 $\det(\mA - \lambda\mI) = 0$。
+\end{proof}
+
+\begin{definition}[特征多项式]
+$\det(\mA - \lambda\mI)$ 是关于 $\lambda$ 的多项式, 称为\vocab{特征多项式 (characteristic polynomial)}。它的根就是特征值。
+\end{definition}
+
+\begin{example}
+对于 $\mA = \twomat{3}{1}{0}{2}$:
+\[
+\det(\mA - \lambda\mI) = \det\twomat{3-\lambda}{1}{0}{2-\lambda} = (3-\lambda)(2-\lambda) - 0 = 0
+\]
+根为: $\lambda_1 = 3$, $\lambda_2 = 2$
+\end{example}
+
+% ============================================
+\section{求特征向量}
+% ============================================
+
+\begin{theorem}
+对于每个特征值 $\lambda$, 对应的特征向量可通过求解齐次方程组得到:
+\[
+(\mA - \lambda\mI)\vv = \vzero
+\]
+\end{theorem}
+
+\begin{example}
+继续上一例, 取 $\lambda = 2$:
+\[
+(\mA - 2\mI)\vv = \twomat{1}{1}{0}{0}\twovec{v_1}{v_2} = \vzero
+\]
+方程为: $v_1 + v_2 = 0$, 于是 $v_1 = -v_2$
+
+特征向量为: $\vv = t\twovec{-1}{1}$, 其中 $t \neq 0$ 为任意数
+\end{example}
+
+% ============================================
+\section{特征空间}
+% ============================================
+
+\begin{definition}[特征空间]
+对应于特征值 $\lambda$ 的\vocab{特征空间 (eigenspace)}:
+\[
+E_\lambda = \Null(\mA - \lambda\mI) = \{\vv \mid \mA\vv = \lambda\vv\}
+\]
+\end{definition}
+
+\begin{intuition}
+特征空间包含变换 $\mA$ 仅以倍数 $\lambda$ 缩放的所有向量。该空间总是一个向量\vocab{子空间 (subspace)}。
+\end{intuition}
+
+% ============================================
+\section{几何解释}
+% ============================================
+
+\begin{practical}
+\textbf{三维旋转}
+
+对于 $\Rthree$ 中的旋转, 特征值 $\lambda = 1$ 对应的特征向量就是\textbf{旋转轴}! 该向量保持不动。
+
+用轴和角描述旋转, 比用 $3 \times 3$ 矩阵简洁得多。
+\end{practical}
+
+\begin{example}
+错切矩阵: $\mA = \twomat{1}{1}{0}{1}$
+
+特征值: $\lambda = 1$ (重根)
+
+特征向量: $\twovec{1}{0}$ (只有一个特征方向)
+
+解释: 错切保持 $x$ 轴不动。
+\end{example}
+
+% ============================================
+\section{特殊情形}
+% ============================================
+
+\begin{theorem}[二维旋转]
+旋转矩阵 $\mR_\theta = \twomat{\cos\theta}{-\sin\theta}{\sin\theta}{\cos\theta}$, 当 $\theta \neq 0, \pi$ 时:
+
+特征值为: $\lambda = \cos\theta \pm i\sin\theta$ (复数!)
+
+没有实向量保持不动——所有向量都旋转了。
+\end{theorem}
+
+\begin{warning}
+即使对实矩阵, 特征值也可能是\textbf{复数}! 旋转中就会出现这种情况。
+\end{warning}
+
+% ============================================
+\section{应用}
+% ============================================
+
+\begin{practical}
+\textbf{谷歌 PageRank}
+
+把网页看作向量, 把链接看作矩阵。主特征向量 (对应最大特征值的特征向量) 反映了各网页的相对重要性。
+\end{practical}
+
+\begin{practical}
+\textbf{主成分分析 (PCA)}
+
+在机器学习中, 协方差矩阵的特征向量给出了数据变化的主要方向。
+\end{practical}
+
+\begin{practical}
+\textbf{量子力学}
+
+算子的特征值 = 可能的测量结果
+
+特征向量 = 系统的稳定状态
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+求下列矩阵的特征值与特征向量:
+\[
+\mA = \twomat{4}{1}{2}{3}
+\]
+\end{exercise}
+
+\begin{exercise}
+证明对角矩阵 (diagonal matrix) 的特征值就是它的对角元。
+\end{exercise}
+
+\begin{exercise}
+求旋转 $90°$ 的旋转矩阵的特征值。
+\end{exercise}
+
+\begin{exercise}
+若 $\lambda$ 是 $\mA$ 的特征值, 证明 $\lambda^2$ 是 $\mA^2$ 的特征值。
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明矩阵的迹 (对角元之和) 等于特征值之和。
+\end{exercise}
+
+\begin{problem}
+种群矩阵:
+\[
+\mL = \twomat{0}{4}{0.5}{0}
+\]
+求主特征值并解释其含义。
+\end{problem}

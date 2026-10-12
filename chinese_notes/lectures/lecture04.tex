@@ -1,0 +1,247 @@
+% lecture04.tex - 三维变换与行列式
+% 第 4 章: 三维变换与行列式 (3D Transformations and Determinants)
+
+\chapter{三维变换与行列式}
+\label{ch:determinant}
+
+\begin{abstract}
+行列式 (determinant) 是一个数, 它度量了线性变换将空间``拉伸''或``压缩''了多少。在本章中, 我们将学习行列式的几何意义以及如何计算行列式。
+\end{abstract}
+
+% ============================================
+\section{三维空间中的变换}
+% ============================================
+
+\begin{definition}[三维变换矩阵]
+$\Rthree$ 中的线性变换可以用一个 $3 \times 3$ 矩阵表示:
+\[
+\mA = \threemat{a_{11}}{a_{12}}{a_{13}}{a_{21}}{a_{22}}{a_{23}}{a_{31}}{a_{32}}{a_{33}}
+\]
+它的各列分别是 $\vi$、$\vj$ 和 $\vk$ 落到的位置。
+\end{definition}
+
+\begin{intuition}
+二维中的同样道理在三维中也适用。想象一张三维网格被拉伸、压缩、旋转或错切。直线仍然保持为直线, 原点保持不动。
+\end{intuition}
+
+% ============================================
+\section{行列式的几何意义}
+% ============================================
+
+\begin{definition}[行列式---几何定义]
+矩阵的\vocab{行列式 (determinant)}是相应的变换缩放面积 (二维) 或体积 (三维) 的倍数。
+
+若 $\mA$ 是变换 $T$ 的矩阵:
+\[
+\det(\mA) = \frac{\text{变换后的面积/体积}}{\text{变换前的面积/体积}}
+\]
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 原始单位正方形
+    \begin{scope}[shift={(0,0)}]
+        \fill[blue!20] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+        \draw[thick] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+        \draw[basis] (0,0) -- (1,0);
+        \draw[basis] (0,0) -- (0,1);
+        \node at (0.5,0.5) {$1$};
+        \node at (0.5,-0.5) {面积 = $1$};
+    \end{scope}
+
+    \draw[-{Stealth}, very thick] (1.5,0.5) -- (2.5,0.5) node[midway, above] {$T$};
+
+    % 变换后的平行四边形
+    \begin{scope}[shift={(3,0)}]
+        \fill[green!20] (0,0) -- (2,0) -- (3,1.5) -- (1,1.5) -- cycle;
+        \draw[thick] (0,0) -- (2,0) -- (3,1.5) -- (1,1.5) -- cycle;
+        \draw[transformed, very thick] (0,0) -- (2,0);
+        \draw[transformed, very thick] (0,0) -- (1,1.5);
+        \node at (1.5,0.75) {$3$};
+        \node at (1.5,-0.5) {面积 = $3$};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{important}
+行列式就是面积/体积的缩放因子。
+
+若 $\det(\mA) = 3$, 则每个图形经过变换后都变为原来的 $3$ 倍大。
+\end{important}
+
+% ============================================
+\section{行列式的符号}
+% ============================================
+
+\begin{theorem}[符号的意义]
+\begin{itemize}
+    \item $\det(\mA) > 0$: 空间的定向保持不变
+    \item $\det(\mA) < 0$: 空间的定向被反转 (像镜子一样)
+    \item $\det(\mA) = 0$: 空间被压缩到更低的维度
+\end{itemize}
+\end{theorem}
+
+\begin{intuition}
+在二维中, 若 $\vj$ 在 $\vi$ 的左侧, 则定向为``正''。若某个变换反转了这种关系 (比如反射), 行列式就变为负数。
+
+在三维中, 用右手定则判断: 若手指从 $\vi$ 向 $\vj$ 卷曲时拇指指向 $\vk$, 则定向为正。
+\end{intuition}
+
+% ============================================
+\section{行列式的计算}
+% ============================================
+
+\subsection{二阶矩阵的行列式}
+
+\begin{definition}
+\[
+\det\twomat{a}{b}{c}{d} = ad - bc
+\]
+\end{definition}
+
+\begin{example}
+\[
+\det\twomat{3}{1}{0}{2} = 3 \times 2 - 1 \times 0 = 6
+\]
+每个图形的面积都被乘以 $6$。
+\end{example}
+
+\subsection{三阶矩阵的行列式}
+
+\begin{definition}[展开公式]
+\[
+\det\threemat{a}{b}{c}{d}{e}{f}{g}{h}{i} = a(ei-fh) - b(di-fg) + c(dh-eg)
+\]
+\end{definition}
+
+\begin{intuition}
+$3 \times 3$ 行列式等于由矩阵的三个列向量张成的平行六面体的体积 (带符号)。
+\end{intuition}
+
+\begin{example}
+\[
+\det\threemat{1}{2}{3}{4}{5}{6}{7}{8}{9}
+\]
+\begin{align*}
+&= 1(5 \times 9 - 6 \times 8) - 2(4 \times 9 - 6 \times 7) + 3(4 \times 8 - 5 \times 7) \\
+&= 1(45-48) - 2(36-42) + 3(32-35) \\
+&= 1(-3) - 2(-6) + 3(-3) \\
+&= -3 + 12 - 9 = 0
+\end{align*}
+行列式为零说明这三个列向量落在同一个平面上!
+\end{example}
+
+% ============================================
+\section{行列式的性质}
+% ============================================
+
+\begin{theorem}[主要性质]
+\begin{enumerate}
+    \item $\det(\mI) = 1$
+    \item $\det(\mA\mB) = \det(\mA) \cdot \det(\mB)$
+    \item $\det(\mA\trans) = \det(\mA)$
+    \item 对 $n \times n$ 矩阵有 $\det(c\mA) = c^n \det(\mA)$
+    \item 若某一行/列全为零: $\det(\mA) = 0$
+    \item 若两行/两列相等: $\det(\mA) = 0$
+\end{enumerate}
+\end{theorem}
+
+\begin{intuition}
+性质 $\det(\mA\mB) = \det(\mA) \cdot \det(\mB)$ 非常重要:
+
+若 $\mA$ 把面积放大 $3$ 倍, $\mB$ 把面积放大 $2$ 倍, 则它们的复合把面积放大 $3 \times 2 = 6$ 倍。
+\end{intuition}
+
+% ============================================
+\section{零行列式与空间坍缩}
+% ============================================
+
+\begin{theorem}
+$\det(\mA) = 0$ 当且仅当:
+\begin{itemize}
+    \item $\mA$ 的各列线性相关
+    \item 相应的变换把空间压缩到更低的维度
+\end{itemize}
+\end{theorem}
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+    % 二维到一维
+    \begin{scope}[shift={(0,0)}]
+        \fill[blue!20] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+        \node at (0.5,-0.5) {$\Rtwo$};
+    \end{scope}
+
+    \draw[-{Stealth}, very thick] (1.5,0.5) -- (3,0.5) node[midway, above] {$\det = 0$};
+
+    \begin{scope}[shift={(3.5,0)}]
+        \draw[blue!70, ultra thick] (-0.5,0.5) -- (2,0.5);
+        \node at (0.75,-0.5) {一条直线};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{practical}
+\textbf{检验线性无关性:}
+
+想知道空间中的三个向量是否线性无关? 把它们作为列排成一个矩阵。若 $\det \neq 0$, 则它们线性无关。
+\end{practical}
+
+% ============================================
+\section{实际应用}
+% ============================================
+
+\begin{practical}
+\textbf{由顶点计算三角形面积}
+
+若三角形的顶点为 $(x_1, y_1)$、$(x_2, y_2)$、$(x_3, y_3)$:
+\[
+\text{Area} = \frac{1}{2} \left| \det\threemat{x_1}{y_1}{1}{x_2}{y_2}{1}{x_3}{y_3}{1} \right|
+\]
+\end{practical}
+
+\begin{practical}
+\textbf{物理: 力矩与力}
+
+行列式用于计算叉积, 而叉积出现在力矩、角动量和电磁场的计算中。
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+计算以下矩阵的行列式:
+\begin{enumerate}[label=(\alph*)]
+    \item $\twomat{3}{7}{1}{4}$
+    \item $\twomat{2}{6}{1}{3}$
+    \item $\twomat{-1}{2}{3}{-6}$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+若 $\det(\mA) = 5$ 且 $\det(\mB) = -2$, 则 $\det(\mA\mB)$ 等于多少?
+\end{exercise}
+
+\begin{exercise}
+计算顶点为 $(0,0)$、$(3,1)$、$(1,4)$、$(4,5)$ 的平行四边形的面积。
+\end{exercise}
+
+\begin{exercise}
+计算旋转角为 $\theta$ 的旋转矩阵的行列式, 并解释结果的含义。
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明对任何矩阵 $\mA$:
+\[
+\det(\mA\inv) = \frac{1}{\det(\mA)}
+\]
+(假设 $\mA$ 可逆)
+\end{exercise}
+
+\begin{problem}
+计算由以下向量张成的平行六面体的体积:
+\[
+\va = \threevec{1}{0}{2}, \quad \vb = \threevec{0}{3}{1}, \quad \vc = \threevec{2}{1}{0}
+\]
+\end{problem}

@@ -1,0 +1,374 @@
+% lecture02.tex - 线性组合、张成与基
+% 第 2 章: 线性组合、张成与基
+
+\chapter{线性组合、张成与基}
+\label{ch:span-basis}
+
+\begin{abstract}
+在本章中, 我们将探讨``线性组合 (linear combination)''、``张成 (span)''与``基 (basis)''这些核心概念。这些概念是深入理解线性代数的基础, 让我们明白向量 (vector) 是如何``填满''空间的。
+\end{abstract}
+
+% ============================================
+\section{坐标的新视角}
+% ============================================
+
+在上一章中, 我们把向量坐标看作``移动指南''。但还有另一种非常重要的视角。
+
+\begin{intuition}
+当我们写 $\vv = \twovec{3}{-2}$ 时, 不要只想``向右走 3 个单位, 向下走 2 个单位'', 而要这样想:
+\begin{itemize}
+    \item 数字 3 是一个\textbf{标量 (scalar)}, 用来缩放向量 $\vi$
+    \item 数字 $-2$ 是一个\textbf{标量}, 用来缩放向量 $\vj$
+    \item 最终的向量是这两个缩放后向量的\textbf{和}
+\end{itemize}
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.3]
+    % 网格
+    \draw[grid] (-1.5,-2.5) grid (4.5,1.5);
+
+    % 坐标轴
+    \draw[axis] (-1.5,0) -- (4.5,0) node[right] {$x$};
+    \draw[axis] (0,-2.5) -- (0,1.5) node[above] {$y$};
+
+    % 基向量 (单位向量)
+    \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (1,0) node[below right] {$\vi$};
+    \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (0,1) node[above left] {$\vj$};
+
+    % 缩放后的向量
+    \draw[vector, orange!70, very thick] (0,0) -- (3,0) node[midway, below] {$3\vi$};
+    \draw[vector, green!60!black, very thick] (3,0) -- (3,-2) node[midway, right] {$-2\vj$};
+
+    % 结果向量
+    \draw[vector, blue!70, ultra thick] (0,0) -- (3,-2) node[below right] {$\vv = 3\vi - 2\vj$};
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{线性组合}
+% ============================================
+
+\begin{definition}[线性组合 (linear combination)]
+两个向量 $\vv$ 与 $\vw$ 的\vocab{线性组合}为:
+\[
+a\vv + b\vw
+\]
+其中 $a$ 与 $b$ 为任意标量。
+
+更一般地, $n$ 个向量 $\vv_1, \vv_2, \ldots, \vv_n$ 的线性组合为:
+\[
+c_1\vv_1 + c_2\vv_2 + \cdots + c_n\vv_n = \sum_{i=1}^{n} c_i\vv_i
+\]
+\end{definition}
+
+\begin{intuition}
+``线性 (linear)''这个名字从何而来? 如果固定其中一个标量, 让另一个标量变化, 所得向量的箭头终点会沿一条\textbf{直线}移动。
+
+例如, 若固定 $b = 1$, 让 $a$ 变化, 则向量 $a\vv + \vw$ 会沿一条与 $\vv$ 平行的直线移动。
+\end{intuition}
+
+\begin{example}
+设 $\vv = \twovec{1}{2}$, $\vw = \twovec{3}{-1}$。一些线性组合如下:
+\begin{align*}
+2\vv + 1\vw &= 2\twovec{1}{2} + 1\twovec{3}{-1} = \twovec{2}{4} + \twovec{3}{-1} = \twovec{5}{3} \\
+-1\vv + 3\vw &= -\twovec{1}{2} + 3\twovec{3}{-1} = \twovec{-1}{-2} + \twovec{9}{-3} = \twovec{8}{-5} \\
+0\vv + 0\vw &= \twovec{0}{0} = \vzero
+\end{align*}
+\end{example}
+
+% ============================================
+\section{张成}
+% ============================================
+
+\begin{definition}[张成 (span)]
+一组向量的\vocab{张成}就是这些向量所有可能的线性组合构成的集合:
+\[
+\spn\{\vv_1, \vv_2, \ldots, \vv_n\} = \{c_1\vv_1 + c_2\vv_2 + \cdots + c_n\vv_n \mid c_i \in \R\}
+\]
+\end{definition}
+
+\begin{intuition}
+关键问题是: 给定一些向量, 只用两种基本运算 (加法与标量乘法), 我们能到达哪些向量?
+
+答案就是: 这些向量的\textbf{张成}。
+\end{intuition}
+
+% -------------------------------------------
+\subsection{二维空间中的张成}
+% -------------------------------------------
+
+\begin{theorem}
+对于 $\Rtwo$ 中的两个向量 $\vv$ 与 $\vw$, 有以下三种可能情形:
+\begin{enumerate}
+    \item 若 $\vv$ 与 $\vw$ 不共线: $\spn\{\vv, \vw\} = \Rtwo$ (整个平面)
+    \item 若 $\vv$ 与 $\vw$ 共线 (但非零): $\spn\{\vv, \vw\}$ 是一条直线
+    \item 若两者均为零向量: $\spn\{\vv, \vw\} = \{\vzero\}$ (只有原点)
+\end{enumerate}
+\end{theorem}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+    % 情形 1: 整个平面
+    \begin{scope}[shift={(0,0)}]
+        \fill[blue!10] (-2,-2) rectangle (2,2);
+        \draw[axis] (-2,0) -- (2,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \draw[vector, red!70, very thick] (0,0) -- (1,0.5) node[right] {$\vv$};
+        \draw[vector, green!60!black, very thick] (0,0) -- (-0.3,1) node[above] {$\vw$};
+        \node at (0,-2.5) {情形 1: 整个平面};
+    \end{scope}
+
+    % 情形 2: 一条直线
+    \begin{scope}[shift={(6,0)}]
+        \draw[blue!30, very thick] (-2,-1) -- (2,1);
+        \draw[axis] (-2,0) -- (2,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \draw[vector, red!70, very thick] (0,0) -- (1,0.5) node[right] {$\vv$};
+        \draw[vector, green!60!black, very thick] (0,0) -- (1.6,0.8) node[above] {$\vw$};
+        \node at (0,-2.5) {情形 2: 一条直线};
+    \end{scope}
+
+    % 情形 3: 只有原点
+    \begin{scope}[shift={(12,0)}]
+        \draw[axis] (-2,0) -- (2,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \fill[blue!70] (0,0) circle (3pt);
+        \node at (0,-2.5) {情形 3: 只有原点};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% -------------------------------------------
+\subsection{三维空间中的张成}
+% -------------------------------------------
+
+\begin{theorem}
+对于 $\Rthree$ 中的向量:
+\begin{itemize}
+    \item \textbf{一个非零向量:} 张成是一条\textbf{直线}
+    \item \textbf{两个不共线的向量:} 张成是一个\textbf{平面}
+    \item \textbf{三个不共面的向量:} 张成是整个 $\Rthree$
+\end{itemize}
+\end{theorem}
+
+\begin{intuition}
+想象三维空间中的两个向量。它们的线性组合构成一个过原点的平面。现在再加入一个不在该平面上的第三个向量, 就好比把这个平面在空间中``扫动''起来, 从而覆盖整个三维空间。
+\end{intuition}
+
+% ============================================
+\section{线性无关与线性相关}
+% ============================================
+
+\begin{definition}[线性相关 (linear dependence)]
+若一组向量中可以去掉其中一个而不改变张成, 则称这组向量\vocab{线性相关}, 换句话说, 其中至少有一个向量是``多余的''。
+
+数学表述: 向量 $\vv_1, \ldots, \vv_n$ 线性相关, 当且仅当存在不全为零的标量 $c_1, \ldots, c_n$, 使得:
+\[
+c_1\vv_1 + c_2\vv_2 + \cdots + c_n\vv_n = \vzero
+\]
+\end{definition}
+
+\begin{definition}[线性无关 (linear independence)]
+若一组向量中没有一个是多余的---即每个向量都为张成增加了新的维度, 则称这组向量\vocab{线性无关}。
+
+数学表述: 向量 $\vv_1, \ldots, \vv_n$ 线性无关, 当且仅当:
+\[
+c_1\vv_1 + c_2\vv_2 + \cdots + c_n\vv_n = \vzero \implies c_1 = c_2 = \cdots = c_n = 0
+\]
+\end{definition}
+
+\begin{example}
+考虑向量 $\vv = \twovec{2}{1}$ 与 $\vw = \twovec{4}{2}$。
+
+这两个向量\textbf{线性相关}, 因为 $\vw = 2\vv$。我们可以写成:
+\[
+2\vv - \vw = \vzero \quad \text{即} \quad 2\twovec{2}{1} - \twovec{4}{2} = \twovec{0}{0}
+\]
+\end{example}
+
+\begin{example}
+向量 $\vv = \twovec{1}{0}$ 与 $\vw = \twovec{0}{1}$ 线性无关。
+
+若 $a\vv + b\vw = \vzero$:
+\[
+a\twovec{1}{0} + b\twovec{0}{1} = \twovec{a}{b} = \twovec{0}{0}
+\]
+于是 $a = 0$ 且 $b = 0$。只有当所有系数都为零时, 才能得到零向量。
+\end{example}
+
+\begin{warning}
+在 $n$ 维空间中, 至多有 $n$ 个向量能线性无关。如果向量个数超过 $n$, 它们一定线性相关。
+\end{warning}
+
+% ============================================
+\section{基}
+% ============================================
+
+\begin{definition}[基 (basis)]
+向量空间的一组\vocab{基}是满足以下两个条件的一组向量:
+\begin{enumerate}
+    \item \textbf{线性无关}
+    \item \textbf{张成}整个空间
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+$\Rtwo$ 的标准基为:
+\[
+\left\{ \vi = \twovec{1}{0}, \; \vj = \twovec{0}{1} \right\}
+\]
+$\Rthree$ 的标准基为:
+\[
+\left\{ \vi = \threevec{1}{0}{0}, \; \vj = \threevec{0}{1}{0}, \; \vk = \threevec{0}{0}{1} \right\}
+\]
+\end{theorem}
+
+\begin{intuition}
+基就像描述向量的一门``语言''。当我们说 $\twovec{3}{2}$ 时, 实际是在说``取 3 个第一个基向量, 再取 2 个第二个基向量''。
+
+如果换一组基, 同一个向量的坐标也会不同---就像把一句话翻译成另一种语言。
+\end{intuition}
+
+% -------------------------------------------
+\subsection{非标准基}
+% -------------------------------------------
+
+\begin{example}
+以下集合也是 $\Rtwo$ 的一组基:
+\[
+\mathcal{B} = \left\{ \vb_1 = \twovec{1}{1}, \; \vb_2 = \twovec{1}{-1} \right\}
+\]
+
+\textbf{线性无关性的证明:} 若 $a\vb_1 + b\vb_2 = \vzero$:
+\[
+a\twovec{1}{1} + b\twovec{1}{-1} = \twovec{a+b}{a-b} = \twovec{0}{0}
+\]
+于是 $a + b = 0$ 且 $a - b = 0$, 解得 $a = b = 0$。
+
+\textbf{张成整个平面:} 因为 $\Rtwo$ 中有两个线性无关的向量, 它们张成整个平面。
+\end{example}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % 网格
+    \draw[grid] (-2,-2) grid (2,2);
+
+    % 坐标轴
+    \draw[axis] (-2,0) -- (2,0) node[right] {$x$};
+    \draw[axis] (0,-2) -- (0,2) node[above] {$y$};
+
+    % 标准基
+    \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (1,0) node[below right] {$\vi$};
+    \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (0,1) node[above left] {$\vj$};
+
+    % 非标准基
+    \draw[vector, blue!70, very thick] (0,0) -- (1,1) node[above right] {$\vb_1$};
+    \draw[vector, green!60!black, very thick] (0,0) -- (1,-1) node[below right] {$\vb_2$};
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{把向量看作点}
+% ============================================
+
+\begin{remark}
+有时把向量看作一支箭头不如把它看作一个\textbf{点}---即向量箭头终点落到的那个点, 会更加方便。
+
+\begin{itemize}
+    \item 当思考单个具体的向量时: 把它想象成一支\textbf{箭头}
+    \item 当思考一族向量时: 把它们想象成一些\textbf{点}
+\end{itemize}
+\end{remark}
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+    % 左图: 作为箭头的向量
+    \begin{scope}[shift={(0,0)}]
+        \draw[axis] (-0.5,0) -- (3,0);
+        \draw[axis] (0,-0.5) -- (0,3);
+        \draw[vector, blue!70] (0,0) -- (1,2);
+        \draw[vector, red!70] (0,0) -- (2,1);
+        \draw[vector, green!60!black] (0,0) -- (2.5,2.5);
+        \node at (1.5,-1) {作为箭头的向量};
+    \end{scope}
+
+    % 右图: 作为点的向量
+    \begin{scope}[shift={(6,0)}]
+        \draw[axis] (-0.5,0) -- (3,0);
+        \draw[axis] (0,-0.5) -- (0,3);
+        \fill[blue!70] (1,2) circle (3pt);
+        \fill[red!70] (2,1) circle (3pt);
+        \fill[green!60!black] (2.5,2.5) circle (3pt);
+        \node at (1.5,-1) {作为点的向量};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{核心概念总结}
+% ============================================
+
+\begin{summary}
+\begin{description}
+    \item[线性组合:] $c_1\vv_1 + c_2\vv_2 + \cdots + c_n\vv_n$, 其中系数为任意标量
+    \item[张成:] 所有可能的线性组合构成的集合
+    \item[线性无关:] 没有向量是多余的
+    \item[线性相关:] 至少有一个向量可以去掉
+    \item[基:] 线性无关且张成整个空间的向量组
+\end{description}
+\end{summary}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+把向量 $\vv = \twovec{4}{6}$ 写成 $\vi$ 与 $\vj$ 的线性组合。
+\end{exercise}
+
+\begin{exercise}
+以下向量是否线性无关? 请说明理由。
+\[
+\va = \twovec{1}{3}, \quad \vb = \twovec{2}{6}
+\]
+\end{exercise}
+
+\begin{exercise}
+以下向量是否线性无关?
+\[
+\vv_1 = \twovec{1}{0}, \quad \vv_2 = \twovec{1}{1}, \quad \vv_3 = \twovec{0}{1}
+\]
+\textit{提示: 在 $\Rtwo$ 中, 最多有几个线性无关的向量?}
+\end{exercise}
+
+\begin{exercise}
+描述以下向量的张成:
+\[
+\vv = \threevec{1}{0}{0}, \quad \vw = \threevec{0}{1}{0}
+\]
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明以下集合是 $\Rtwo$ 的一组基:
+\[
+\left\{ \twovec{2}{1}, \twovec{1}{3} \right\}
+\]
+然后求向量 $\twovec{5}{7}$ 在这组新基下的坐标。
+\end{exercise}
+
+\begin{exercise}
+给定 $\Rthree$ 中的三个向量:
+\[
+\vv_1 = \threevec{1}{0}{1}, \quad \vv_2 = \threevec{0}{1}{1}, \quad \vv_3 = \threevec{1}{1}{2}
+\]
+这些向量是否线性无关? 它们的张成是什么?
+\end{exercise}
+
+\begin{problem}
+证明: 若 $\{\vv_1, \vv_2\}$ 是 $\Rtwo$ 的一组基, 则 $\{2\vv_1, 3\vv_2\}$ 也是一组基。
+\end{problem}
+
+\begin{problem}
+在 $\Rtwo$ 中能否找到三个线性无关的向量? 为什么?
+\end{problem}

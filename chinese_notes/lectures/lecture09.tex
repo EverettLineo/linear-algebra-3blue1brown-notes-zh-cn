@@ -1,0 +1,200 @@
+% lecture09.tex - 基变换
+% 第 9 章: 基变换 (Change of Basis)
+
+\chapter{基变换}
+\label{ch:changebasis}
+
+\begin{abstract}
+同一个向量在不同基下有不同的坐标 (coordinates)。在本章中, 我们将学习如何在不同坐标系之间转换, 以及这一概念与矩阵的关系。
+\end{abstract}
+
+% ============================================
+\section{不同基下的坐标}
+% ============================================
+
+\begin{intuition}
+向量的坐标 (coordinates) 依赖于所选的基。如果你说不同的语言, 同一个意思也会有不同的表达方式。
+
+例如: 在标准基下为 $\twovec{3}{2}$ 的向量 $\vv$, 在另一组基下可能是 $\twovec{1}{1}$!
+\end{intuition}
+
+\begin{definition}[基下的坐标]
+若 $\mathcal{B} = \{\vb_1, \vb_2\}$ 是一组基, 则向量 $\vv$ 在该基下的坐标 (coordinates) 是满足下式的系数 $c_1, c_2$:
+\[
+\vv = c_1 \vb_1 + c_2 \vb_2
+\]
+记号: $[\vv]_{\mathcal{B}} = \twovec{c_1}{c_2}$
+\end{definition}
+
+\begin{example}
+基 $\mathcal{B} = \left\{ \vb_1 = \twovec{2}{1}, \vb_2 = \twovec{-1}{1} \right\}$
+
+把向量 $\vv = \twovec{3}{2}$ 表示在这组基下。
+
+需要求 $c_1, c_2$ 使得:
+\[
+c_1 \twovec{2}{1} + c_2 \twovec{-1}{1} = \twovec{3}{2}
+\]
+\[
+\system{
+2c_1 - c_2 &= 3 \\
+c_1 + c_2 &= 2
+}
+\]
+解为: $c_1 = \frac{5}{3}$, $c_2 = \frac{1}{3}$
+
+于是 $[\vv]_{\mathcal{B}} = \twovec{5/3}{1/3}$
+\end{example}
+
+% ============================================
+\section{过渡矩阵}
+% ============================================
+
+\begin{definition}[过渡矩阵]
+从基 $\mathcal{B}$ 到标准基的\vocab{过渡矩阵 (transition matrix, 即基变换矩阵 change of basis matrix)}是以 $\mathcal{B}$ 的基向量为列构成的矩阵:
+\[
+\mP = [\vb_1 \,|\, \vb_2 \,|\, \cdots \,|\, \vb_n]
+\]
+\end{definition}
+
+\begin{theorem}
+\[
+\vv = \mP \, [\vv]_{\mathcal{B}}
+\]
+即: 基 $\mathcal{B}$ 下的坐标乘以过渡矩阵 = 标准基下的向量
+\end{theorem}
+
+\begin{theorem}
+\[
+[\vv]_{\mathcal{B}} = \mP\inv \vv
+\]
+即: 要从标准基转换到基 $\mathcal{B}$, 需要用逆矩阵。
+\end{theorem}
+
+% ============================================
+\section{基变换的变换视角}
+% ============================================
+
+\begin{intuition}
+矩阵 $\mP$ 是一个恒等变换, 它只改变语言:
+\begin{itemize}
+    \item $\mP$: 把语言 $\mathcal{B}$ 翻译成标准语言
+    \item $\mP\inv$: 把标准语言翻译成语言 $\mathcal{B}$
+\end{itemize}
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 标准基
+    \begin{scope}[shift={(0,0)}]
+        \draw[grid] (-0.5,-0.5) grid (3.5,2.5);
+        \draw[axis] (-0.5,0) -- (3.5,0);
+        \draw[axis] (0,-0.5) -- (0,2.5);
+        \draw[basis] (0,0) -- (1,0) node[below] {$\vi$};
+        \draw[basis] (0,0) -- (0,1) node[left] {$\vj$};
+        \draw[vector, blue!70, very thick] (0,0) -- (3,2) node[above] {$\vv$};
+        \node at (1.5,-1) {标准基};
+        \node at (1.5,-1.5) {$\vv = \twovec{3}{2}$};
+    \end{scope}
+
+    % 另一组基
+    \begin{scope}[shift={(6,0)}]
+        \draw[gray!30] (-0.5,-0.5) -- (1,0.5) -- (3,1.5) -- (1.5,1) -- cycle;
+        \draw[axis] (-0.5,0) -- (3.5,0);
+        \draw[axis] (0,-0.5) -- (0,2.5);
+        \draw[red!70, very thick, -{Stealth}] (0,0) -- (2,1) node[below right] {$\vb_1$};
+        \draw[red!70, very thick, -{Stealth}] (0,0) -- (-1,1) node[above left] {$\vb_2$};
+        \draw[vector, blue!70, very thick] (0,0) -- (3,2) node[above] {$\vv$};
+        \node at (1.5,-1) {基 $\mathcal{B}$};
+        \node at (1.5,-1.5) {$[\vv]_{\mathcal{B}} = \twovec{?}{?}$};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{在不同基下表示变换}
+% ============================================
+
+\begin{theorem}[新基下的变换矩阵]
+若 $\mA$ 是变换 $T$ 在标准基下的矩阵, 则同一变换在基 $\mathcal{B}$ 下的矩阵为:
+\[
+[\mA]_{\mathcal{B}} = \mP\inv \mA \mP
+\]
+\end{theorem}
+
+\begin{intuition}
+这个公式包含三步:
+\begin{enumerate}
+    \item $\mP$: 从基 $\mathcal{B}$ 翻译到标准基
+    \item $\mA$: 在标准基下实施变换
+    \item $\mP\inv$: 把结果翻译回基 $\mathcal{B}$
+\end{enumerate}
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[node distance=3cm]
+    \node (B1) {$[\vv]_{\mathcal{B}}$};
+    \node (S1) [right of=B1] {$\vv$};
+    \node (S2) [right of=S1] {$T(\vv)$};
+    \node (B2) [right of=S2] {$[T(\vv)]_{\mathcal{B}}$};
+
+    \draw[-{Stealth}, thick] (B1) -- (S1) node[midway, above] {$\mP$};
+    \draw[-{Stealth}, thick] (S1) -- (S2) node[midway, above] {$\mA$};
+    \draw[-{Stealth}, thick] (S2) -- (B2) node[midway, above] {$\mP\inv$};
+    \draw[-{Stealth}, thick, blue] (B1) to[bend right=30] node[midway, below] {$\mP\inv\mA\mP$} (B2);
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{基变换的重要性}
+% ============================================
+
+\begin{intuition}
+为什么基变换 (change of basis) 重要?
+
+有些变换在特定基下看起来\textbf{更简单}。例如:
+\begin{itemize}
+    \item 在标准基下旋转很复杂
+    \item 但在一条轴落在旋转轴上的基下, 它就变简单了
+\end{itemize}
+
+对一个变换最好的基? \textbf{特征基 (eigenbasis)}---下一章见!
+\end{intuition}
+
+\begin{practical}
+\textbf{应用: 简化计算}
+
+假设要计算 $\mA^{100}$。如果在合适的基下, $\mA$ 变为对角矩阵:
+\[
+\mP\inv \mA \mP = \mD \quad \text{(diagonal)}
+\]
+则:
+\[
+\mA^{100} = \mP \mD^{100} \mP\inv
+\]
+而 $\mD^{100}$ 非常容易计算!
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+已知基 $\mathcal{B} = \left\{ \twovec{1}{1}, \twovec{1}{-1} \right\}$, 求向量 $\vv = \twovec{3}{1}$ 在该基下的坐标 (coordinates)。
+\end{exercise}
+
+\begin{exercise}
+写出从 $\mathcal{B} = \left\{ \twovec{2}{1}, \twovec{1}{1} \right\}$ 到标准基的过渡矩阵 (transition matrix)。
+\end{exercise}
+
+\begin{exercise}
+若变换在标准基下的矩阵为 $\mA = \twomat{2}{1}{0}{3}$, 求该变换在基 $\mathcal{B} = \left\{ \twovec{1}{0}, \twovec{1}{1} \right\}$ 下的矩阵。
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明 $\det(\mP\inv\mA\mP) = \det(\mA)$。
+\end{exercise}
+
+\begin{problem}
+已知两组基 $\mathcal{B}_1$ 和 $\mathcal{B}_2$。如何直接计算从 $\mathcal{B}_1$ 到 $\mathcal{B}_2$ 的过渡矩阵 (不经过标准基)?
+\end{problem}

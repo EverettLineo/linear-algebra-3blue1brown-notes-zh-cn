@@ -1,0 +1,199 @@
+% main.tex - 中文线性代数讲义
+% 主文档 - 使用 XeLaTeX 编译
+%
+% 线性代数: 线性代数的本质 (Essence of Linear Algebra)
+% 基于 3Blue1Brown 视频系列
+%
+% 编译方式: xelatex main.tex (运行 2 次以生成目录和引用)
+
+\input{preamble}
+
+\begin{document}
+
+% === 封面 ===
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+
+{\Huge\bfseries 线性代数}\\[0.5cm]
+{\LARGE\bfseries 线性代数的本质}\\[0.3cm]
+{\large Essence of Linear Algebra}\\[2cm]
+
+{\Large 综合讲义}\\[0.5cm]
+{\large 强调几何直观与实际应用}\\[2cm]
+
+\begin{tikzpicture}[scale=0.6]
+    % 背景网格
+    \draw[grid] (-3,-3) grid (3,3);
+
+    % 坐标轴
+    \draw[axis] (-3.5,0) -- (3.5,0);
+    \draw[axis] (0,-3.5) -- (0,3.5);
+
+    % 基向量
+    \draw[basis, -{Stealth[length=4mm]}] (0,0) -- (1,0) node[below right] {$\vi$};
+    \draw[basis, -{Stealth[length=4mm]}] (0,0) -- (0,1) node[above left] {$\vj$};
+
+    % 一个变换后的向量
+    \draw[vector, blue!70, very thick] (0,0) -- (2,1.5) node[above right] {$\vv$};
+
+    % 另一个向量
+    \draw[vector, green!60!black, very thick] (0,0) -- (-1,2) node[above left] {$\vw$};
+\end{tikzpicture}\\[2cm]
+
+{\large 基于 Grant Sanderson 的视频系列}\\[0.3cm]
+{\Large\textbf{线性代数的本质}}\\[0.3cm]
+{\large Essence of Linear Algebra}\\[0.3cm]
+{\small YouTube 频道: 3Blue1Brown}\\[1.5cm]
+
+{\small \today}
+
+\end{titlepage}
+
+% === 致谢页 ===
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+
+{\Large\bfseries 致谢}
+
+\vspace{2cm}
+
+{\large 特别感谢原英文/波斯语版贡献者:}
+
+\vspace{1cm}
+
+Ebrahim Khosravani\\[0.25cm]
+Mohammadhasan Shiri\\[0.25cm]
+Zahra Amiri\\[0.25cm]
+Amin Azizi\\[0.25cm]
+Bita Qorbani\\[0.25cm]
+Yasamin Yazdani\\[0.25cm]
+Sepehr Talaei
+
+\vspace{2cm}
+
+{\small 基于 3Blue1Brown 的``线性代数的本质 (Essence of Linear Algebra)''视频系列}
+
+\vspace{1cm}
+
+{\small 谢里夫理工大学 (Sharif University of Technology) 物理学科学协会}
+
+\vspace{1cm}
+{\small 中文版由英文版翻译而来, 仅供学习交流使用}
+\end{titlepage}
+
+% === 目录 ===
+\tableofcontents
+
+% === 前言 ===
+\chapter*{前言}
+\addcontentsline{toc}{chapter}{前言}
+
+本讲义基于 Grant Sanderson 在 YouTube 频道 3Blue1Brown 上发布的著名视频系列``线性代数的本质 (Essence of Linear Algebra)''。该系列的主要目标是帮助读者建立对线性代数概念的直观、几何化理解。
+
+\section*{本讲义的特点}
+\begin{itemize}
+    \item \textbf{几何直观 (Geometric Intuition):} 强调对概念的可视化理解, 而不仅仅是计算
+    \item \textbf{严格定义 (Rigorous Definitions):} 标准的数学表述
+    \item \textbf{实际应用 (Practical Applications):} 在物理、计算机科学与工程中的应用
+    \item \textbf{练习 (Exercises):} 类型多样的习题以巩固学习
+\end{itemize}
+
+\section*{预备知识}
+\begin{itemize}
+    \item 基本数学知识 (高中代数)
+    \item 笛卡尔坐标系 (Cartesian coordinate system) 的理解
+    \item 对深入理解数学的渴望!
+\end{itemize}
+
+\section*{如何使用本讲义}
+每章包含以下部分:
+\begin{description}
+    \item[定义:] 关键概念与数学符号
+    \item[几何直观:] 可视化解释 (蓝色框)
+    \item[实际应用:] 现实世界中的例子 (绿色框)
+    \item[练习:] 供实践的习题
+\end{description}
+
+\begin{flushright}
+祝线性代数学习愉快!
+\end{flushright}
+
+% === 各章 ===
+
+% 第 1 章: 向量简介
+\input{lectures/lecture01}
+
+% 第 2 章: 线性组合、张成与基
+\input{lectures/lecture02}
+
+% 第 3 章: 线性变换与矩阵
+\input{lectures/lecture03}
+
+% 第 4 章: 三维变换与行列式
+\input{lectures/lecture04}
+
+% 第 5 章: 逆矩阵、列空间与零空间
+\input{lectures/lecture05}
+
+% 第 6 章: 点积与对偶性
+\input{lectures/lecture06}
+
+% 第 7 章: 叉积及应用
+\input{lectures/lecture07}
+
+% 第 8 章: 克拉默法则
+\input{lectures/lecture08}
+
+% 第 9 章: 基变换
+\input{lectures/lecture09}
+
+% 第 10 章: 特征向量与特征值
+\input{lectures/lecture10}
+
+% 第 11 章: 特征值计算与特征基
+\input{lectures/lecture11}
+
+% 第 12 章: 抽象向量空间
+\input{lectures/lecture12}
+
+% === 附录: 术语表 ===
+\appendix
+\chapter{术语表}
+
+\begin{center}
+\begin{tabular}{l|l|l}
+\toprule
+\textbf{中文} & \textbf{英文} & \textbf{符号/记法} \\
+\midrule
+向量 & Vector & $\vv, \vw, \vu$ \\
+矩阵 & Matrix & $\mA, \mB, \mC$ \\
+线性变换 & Linear Transformation & $T: \Rtwo \to \Rtwo$ \\
+行列式 & Determinant & $\det(\mA)$ \\
+特征值 & Eigenvalue & $\lambda$ \\
+特征向量 & Eigenvector & $\vv$ \\
+基 & Basis & $\{\vi, \vj\}$ \\
+张成 & Span & $\spn\{\vv_1, \vv_2, \ldots\}$ \\
+零空间 & Null Space & $\Null(\mA)$ \\
+列空间 & Column Space & $\Col(\mA)$ \\
+行空间 & Row Space & $\Row(\mA)$ \\
+秩 & Rank & $\rank(\mA)$ \\
+线性无关 & Linear Independence & 无冗余的向量组 \\
+线性相关 & Linear Dependence & 至少有一个冗余向量 \\
+点积 & Dot Product & $\vv \cdot \vw$ \\
+叉积 & Cross Product & $\vv \times \vw$ \\
+单位矩阵 & Identity Matrix & $\mI$ \\
+逆矩阵 & Inverse Matrix & $\mA\inv$ \\
+转置 & Transpose & $\mA\trans$ \\
+基变换 & Change of Basis & $\mP\inv \mA \mP$ \\
+特征基 & Eigenbasis & 由特征向量组成的基 \\
+对角矩阵 & Diagonal Matrix & 仅对角线非零 \\
+标量 & Scalar & 一个数 (实数或复数) \\
+线性组合 & Linear Combination & $c_1\vv_1 + c_2\vv_2 + \cdots$ \\
+向量空间 & Vector Space & 对加法和标量乘法封闭的集合 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

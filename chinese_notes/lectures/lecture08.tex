@@ -1,0 +1,233 @@
+% lecture08.tex - 克拉默法则
+% 第 8 章: 克拉默法则 (Cramer's Rule)
+
+\chapter{克拉默法则}
+\label{ch:cramer}
+
+\begin{abstract}
+克拉默法则 (Cramer's Rule) 是一种用行列式求解线性方程组的优雅方法。在本章中, 我们将学习它的几何解释及其使用条件。
+\end{abstract}
+
+% ============================================
+\section{克拉默法则的表述}
+% ============================================
+
+\begin{theorem}[克拉默法则]
+对于系数矩阵为 $n \times n$ 矩阵且 $\det(\mA) \neq 0$ 的方程组 $\mA\vx = \vb$:
+\[
+x_i = \frac{\det(\mA_i)}{\det(\mA)}
+\]
+其中 $\mA_i$ 是把 $\mA$ 的第 $i$ 列换成向量 $\vb$ 后得到的矩阵。
+\end{theorem}
+
+\begin{example}
+对于 $2 \times 2$ 方程组:
+\[
+\system{
+ax + by &= e \\
+cx + dy &= f
+}
+\]
+解为:
+\[
+x = \frac{\det\twomat{e}{b}{f}{d}}{\det\twomat{a}{b}{c}{d}} = \frac{ed - bf}{ad - bc}
+\]
+\[
+y = \frac{\det\twomat{a}{e}{c}{f}}{\det\twomat{a}{b}{c}{d}} = \frac{af - ec}{ad - bc}
+\]
+\end{example}
+
+% ============================================
+\section{几何解释}
+% ============================================
+
+\begin{intuition}
+在二维情形, 方程 $\mA\vx = \vb$ 是在问:
+
+``$\mA$ 的列向量的什么线性组合 (linear combination) 等于 $\vb$?''
+
+若 $\mA = [\va_1 \,|\, \va_2]$ 且 $\vx = \twovec{x}{y}$:
+\[
+x\va_1 + y\va_2 = \vb
+\]
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.3]
+    % 平行四边形向量
+    \draw[vector, red!70, very thick] (0,0) -- (2,0.5) node[right] {$\va_1$};
+    \draw[vector, blue!70, very thick] (0,0) -- (0.5,2) node[above] {$\va_2$};
+    \draw[vector, green!60!black, ultra thick] (0,0) -- (1.5,1.5) node[above right] {$\vb$};
+
+    % 由 b 和 a2 张成的平行四边形
+    \fill[orange!20] (0,0) -- (1.5,1.5) -- (2,3.5) -- (0.5,2) -- cycle;
+
+    % 由 a1 和 a2 张成的平行四边形
+    \fill[gray!20] (0,0) -- (2,0.5) -- (2.5,2.5) -- (0.5,2) -- cycle;
+
+    \node at (1.2,2.5) {\small 橙色区域};
+    \node at (1.8,1) {\small 灰色区域};
+\end{tikzpicture}
+\end{center}
+
+\begin{theorem}[面积解释]
+\[
+x = \frac{\text{Area of parallelogram}(\vb, \va_2)}{\text{Area of parallelogram}(\va_1, \va_2)}
+\]
+\[
+y = \frac{\text{Area of parallelogram}(\va_1, \vb)}{\text{Area of parallelogram}(\va_1, \va_2)}
+\]
+\end{theorem}
+
+\begin{intuition}
+为什么这样是对的?
+
+考虑平行四边形 $(\vb, \va_2)$。因为 $\vb = x\va_1 + y\va_2$:
+\[
+\text{Area}(\vb, \va_2) = \text{Area}(x\va_1 + y\va_2, \va_2)
+\]
+因为 $\va_2 \times \va_2 = 0$:
+\[
+= \text{Area}(x\va_1, \va_2) = x \cdot \text{Area}(\va_1, \va_2)
+\]
+因此:
+\[
+x = \frac{\text{Area}(\vb, \va_2)}{\text{Area}(\va_1, \va_2)}
+\]
+\end{intuition}
+
+% ============================================
+\section{计算示例}
+% ============================================
+
+\begin{example}
+解方程组:
+\[
+\system{
+3x + 2y &= 7 \\
+x + 4y &= 9
+}
+\]
+
+\textbf{第 1 步:} 计算 $\det(\mA)$:
+\[
+\det\twomat{3}{2}{1}{4} = 12 - 2 = 10
+\]
+
+\textbf{第 2 步:} 计算 $x$:
+\[
+x = \frac{\det\twomat{7}{2}{9}{4}}{\det(\mA)} = \frac{28 - 18}{10} = \frac{10}{10} = 1
+\]
+
+\textbf{第 3 步:} 计算 $y$:
+\[
+y = \frac{\det\twomat{3}{7}{1}{9}}{\det(\mA)} = \frac{27 - 7}{10} = \frac{20}{10} = 2
+\]
+
+\textbf{检验:} $3(1) + 2(2) = 7$ \checkmark\ 且 $1(1) + 4(2) = 9$ \checkmark
+\end{example}
+
+% ============================================
+\section{三维及更高维情形}
+% ============================================
+
+\begin{example}
+一个 $3 \times 3$ 方程组:
+\[
+\system{
+2x + y - z &= 3 \\
+x - y + 2z &= 1 \\
+3x + 2y + z &= 4
+}
+\]
+
+系数矩阵为:
+\[
+\mA = \threemat{2}{1}{-1}{1}{-1}{2}{3}{2}{1}
+\]
+
+\[
+x = \frac{\det\threemat{3}{1}{-1}{1}{-1}{2}{4}{2}{1}}{\det(\mA)}, \quad
+y = \frac{\det\threemat{2}{3}{-1}{1}{1}{2}{3}{4}{1}}{\det(\mA)}, \quad
+z = \frac{\det\threemat{2}{1}{3}{1}{-1}{1}{3}{2}{4}}{\det(\mA)}
+\]
+\end{example}
+
+\begin{intuition}
+在三维情形, 我们得到的是\textbf{体积 (volumes)}之比, 而不是面积之比。
+
+$x$ = 平行六面体 $(\vb, \va_2, \va_3)$ 的体积与 $(\va_1, \va_2, \va_3)$ 的体积之比
+\end{intuition}
+
+% ============================================
+\section{局限与应用}
+% ============================================
+
+\begin{warning}
+克拉默法则 (Cramer's Rule):
+\begin{itemize}
+    \item 仅适用于方方程组 ($n$ 个方程, $n$ 个未知数)
+    \item 仅当 $\det(\mA) \neq 0$ (有唯一解)
+    \item 当 $n$ 较大时, 计算量\textbf{非常大}
+\end{itemize}
+\end{warning}
+
+\begin{remark}
+实际中, 求解大型方程组时一般使用高斯消元法 (Gaussian elimination) 等更高效的方法。但克拉默法则 (Cramer's Rule):
+\begin{itemize}
+    \item 提供了更深刻的理论理解
+    \item 便于给出解析公式
+    \item 常用于定理证明
+\end{itemize}
+\end{remark}
+
+\begin{practical}
+\textbf{应用: 求直线交点}
+
+两条直线 $a_1x + b_1y = c_1$ 和 $a_2x + b_2y = c_2$ 的交点为:
+\[
+x = \frac{c_1 b_2 - c_2 b_1}{a_1 b_2 - a_2 b_1}, \quad y = \frac{a_1 c_2 - a_2 c_1}{a_1 b_2 - a_2 b_1}
+\]
+这个公式直接来自克拉默法则。
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+用克拉默法则求解:
+\[
+\system{
+2x + 3y &= 8 \\
+4x - y &= 2
+}
+\]
+\end{exercise}
+
+\begin{exercise}
+用克拉默法则求解:
+\[
+\system{
+x + y + z &= 6 \\
+2x - y + z &= 3 \\
+x + 2y - z &= 2
+}
+\]
+\end{exercise}
+
+\begin{exercise}
+用克拉默法则求直线 $2x + 3y = 7$ 和 $x - y = 1$ 的交点。
+\end{exercise}
+
+\begin{exercise}
+解释当 $\det(\mA) = 0$ 时克拉默法则的几何含义。
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明克拉默公式与计算 $\mA\inv \vb$ 是一致的。
+\end{exercise}
+
+\begin{problem}
+已知三角形顶点为 $A(1,1)$, $B(4,2)$, $C(2,5)$。用克拉默法则求其重心的坐标 (coordinates)。
+\end{problem}

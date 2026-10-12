@@ -1,0 +1,180 @@
+% preamble.tex - 中文线性代数讲义
+% XeLaTeX 配置 (ctex 中文支持)
+% 编译方式: xelatex main.tex (运行 2 次以生成目录和引用)
+
+\documentclass[12pt,a4paper,openany,oneside]{book}
+
+% === 中文支持 (必须最先加载, 需要 XeLaTeX) ===
+\usepackage[UTF8, scheme=plain]{ctex}
+
+% === 页面设置 ===
+\usepackage{geometry}
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=14pt
+}
+
+% === 数学宏包 ===
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% === 图形与绘图 ===
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, calc, positioning, decorations.pathreplacing, patterns}
+
+% === 颜色与盒子 ===
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable,theorems}
+
+% === 表格与列表 ===
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+% === 超链接 (建议放在较后位置) ===
+\usepackage[colorlinks=true,linkcolor=blue!70!black,urlcolor=blue!70!black,citecolor=green!50!black]{hyperref}
+
+% === 定理环境 (中文) ===
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[chapter]
+\newtheorem{example}{例}[chapter]
+\newtheorem{exercise}{练习}[chapter]
+\newtheorem{problem}{习题}[chapter]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{lemma}{引理}[chapter]
+\newtheorem{proposition}{命题}[chapter]
+\newtheorem{corollary}{推论}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{remark}{注}[chapter]
+\newtheorem{note}{备注}[chapter]
+
+% === 自定义 tcolorbox 环境 (中文标题) ===
+
+% 几何直观盒子
+\newtcolorbox{intuition}{
+    enhanced,
+    colback=blue!5,
+    colframe=blue!75!black,
+    fonttitle=\bfseries,
+    title={几何直观},
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% 实际应用盒子
+\newtcolorbox{practical}{
+    enhanced,
+    colback=green!5,
+    colframe=green!60!black,
+    fonttitle=\bfseries,
+    title={实际应用},
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% 注意盒子
+\newtcolorbox{warning}{
+    enhanced,
+    colback=red!5,
+    colframe=red!75!black,
+    fonttitle=\bfseries,
+    title={注意},
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% 重点盒子
+\newtcolorbox{important}{
+    enhanced,
+    colback=orange!5,
+    colframe=orange!75!black,
+    fonttitle=\bfseries,
+    title={重点},
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% 本章小结盒子
+\newtcolorbox{summary}{
+    enhanced,
+    colback=purple!5,
+    colframe=purple!75!black,
+    fonttitle=\bfseries,
+    title={本章小结},
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm,
+    arc=2mm,
+    boxrule=1pt
+}
+
+% === 页眉页脚 ===
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% === 行距 ===
+\usepackage{setspace}
+\onehalfspacing
+
+% === 摘要环境 (book 文档类默认没有 abstract 环境, 自定义为缩进小字块) ===
+\newenvironment{abstract}{%
+  \small
+  \begin{quotation}\noindent\ignorespaces
+}{%
+  \end{quotation}
+}
+
+% === 自定义数学命令 ===
+\input{commands}
+
+% === TikZ 线性代数绘图样式 ===
+\tikzset{
+    vector/.style={-{Stealth[length=3mm]}, thick},
+    axis/.style={-{Stealth[length=2mm]}, gray},
+    grid/.style={very thin, gray!30},
+    transformed/.style={blue!70},
+    original/.style={black},
+    basis/.style={red!70!black, very thick},
+    point/.style={circle, fill, inner sep=1.5pt}
+}

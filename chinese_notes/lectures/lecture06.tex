@@ -1,0 +1,238 @@
+% lecture06.tex - 点积与对偶性
+% 第 6 章: 点积与对偶性 (Dot Products and Duality)
+
+\chapter{点积与对偶性}
+\label{ch:dotproduct}
+
+\begin{abstract}
+点积 (dot product) 是线性代数中最基本的运算之一。在本章中, 我们将学习它的定义、性质, 以及把向量与线性函数联系起来的深刻概念---对偶性。
+\end{abstract}
+
+% ============================================
+\section{点积的定义}
+% ============================================
+
+\begin{definition}[点积]
+两个向量 $\vv = \twovec{v_1}{v_2}$ 和 $\vw = \twovec{w_1}{w_2}$ 的\vocab{点积 (dot product)}为:
+\[
+\vv \cdot \vw = v_1 w_1 + v_2 w_2
+\]
+在 $n$ 维空间中:
+\[
+\vv \cdot \vw = \sum_{i=1}^{n} v_i w_i
+\]
+\end{definition}
+
+\begin{important}
+两个向量的点积是一个\textbf{数} (标量), 不是向量!
+\end{important}
+
+\begin{example}
+\[
+\twovec{3}{2} \cdot \twovec{1}{4} = 3 \times 1 + 2 \times 4 = 3 + 8 = 11
+\]
+\end{example}
+
+% ============================================
+\section{几何解释}
+% ============================================
+
+\begin{theorem}[点积的几何公式]
+\[
+\vv \cdot \vw = \norm{\vv} \norm{\vw} \cos\theta
+\]
+其中 $\theta$ 是两向量之间的夹角。
+\end{theorem}
+
+\begin{intuition}
+点积有两种理解方式:
+\begin{enumerate}
+    \item $\vv$ 的长度乘以 $\vw$ 在 $\vv$ 上的投影 (projection) 的长度
+    \item $\vw$ 的长度乘以 $\vv$ 在 $\vw$ 上的投影的长度
+\end{enumerate}
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % 向量
+    \draw[vector, blue!70, very thick] (0,0) -- (3,0) node[right] {$\vv$};
+    \draw[vector, green!60!black, very thick] (0,0) -- (2,1.5) node[above] {$\vw$};
+
+    % 投影
+    \draw[dashed, red] (2,1.5) -- (2,0);
+    \draw[red, thick] (0,0) -- (2,0) node[midway, below] {$\vw$ 的投影};
+
+    % 夹角
+    \draw (0.7,0) arc (0:36.87:0.7) node[midway, right] {$\theta$};
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{点积的性质}
+% ============================================
+
+\begin{theorem}[主要性质]
+\begin{enumerate}
+    \item \textbf{交换律:} $\vv \cdot \vw = \vw \cdot \vv$
+    \item \textbf{分配律:} $\vv \cdot (\vw + \vu) = \vv \cdot \vw + \vv \cdot \vu$
+    \item \textbf{数乘:} $(c\vv) \cdot \vw = c(\vv \cdot \vw)$
+    \item \textbf{正定性:} $\vv \cdot \vv \geq 0$ 且 $\vv \cdot \vv = 0 \Leftrightarrow \vv = \vzero$
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}[向量的长度]
+\[
+\norm{\vv} = \sqrt{\vv \cdot \vv} = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}
+\]
+\end{definition}
+
+% ============================================
+\section{正交性}
+% ============================================
+
+\begin{theorem}[正交的条件]
+两个向量 $\vv$ 和 $\vw$ \vocab{正交 (orthogonal)} (垂直) 当且仅当:
+\[
+\vv \cdot \vw = 0
+\]
+\end{theorem}
+
+\begin{intuition}
+若 $\vv \cdot \vw = 0$, 则 $\cos\theta = 0$, 所以 $\theta = 90°$。
+
+任何向量在与它垂直的向量上的投影都是零。
+\end{intuition}
+
+\begin{example}
+向量 $\vv = \twovec{3}{2}$ 和 $\vw = \twovec{2}{-3}$ 正交, 因为:
+\[
+\vv \cdot \vw = 3 \times 2 + 2 \times (-3) = 6 - 6 = 0
+\]
+\end{example}
+
+% ============================================
+\section{向量投影}
+% ============================================
+
+\begin{definition}[向量的投影]
+向量 $\vv$ 在向量 $\vw$ 上的投影为:
+\[
+\proj_{\vw}(\vv) = \frac{\vv \cdot \vw}{\vw \cdot \vw} \vw = \frac{\vv \cdot \vw}{\norm{\vw}^2} \vw
+\]
+\end{definition}
+
+\begin{intuition}
+$\vv$ 在 $\vw$ 上的投影是一个沿 $\vw$ 方向的向量, 它表示 $\vv$ 在 $\vw$ 所在直线上的``影子''。
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    \draw[vector, blue!70, very thick] (0,0) -- (3,0) node[right] {$\vw$};
+    \draw[vector, green!60!black, very thick] (0,0) -- (2,2) node[above] {$\vv$};
+    \draw[vector, red!70, very thick] (0,0) -- (2,0) node[below] {$\proj_{\vw}(\vv)$};
+    \draw[dashed, gray] (2,2) -- (2,0);
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{对偶性}
+% ============================================
+
+\begin{intuition}
+一个深刻的洞见: 每个 $1 \times n$ 行向量都可以看作一个\textbf{线性函数}, 它把 $n$ 维向量变成数。
+
+例如, $\bmat{2 & 1}$ 是一个线性函数:
+\[
+\bmat{2 & 1} \twovec{x}{y} = 2x + y
+\]
+\end{intuition}
+
+\begin{theorem}[对偶性]
+每个线性函数 $f: \R^n \to \R$ 都可以写成与某个固定向量的点积:
+\[
+f(\vx) = \vv \cdot \vx
+\]
+其中向量 $\vv$ 唯一确定。
+\end{theorem}
+
+\begin{definition}[对偶向量]
+表示线性函数 $f$ 的向量 $\vv$ 称为该函数的\vocab{对偶向量 (dual vector)}。
+\end{definition}
+
+\begin{practical}
+\textbf{在机器学习中的应用:}
+
+在神经网络中, 每个神经元计算其输入的一个线性函数:
+\[
+\text{output} = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n = \vw \cdot \vx
+\]
+权重 $\vw$ 就是该神经元的对偶向量。
+\end{practical}
+
+% ============================================
+\section{实际应用}
+% ============================================
+
+\begin{practical}
+\textbf{物理: 机械功}
+
+力 $\vec{F}$ 在位移 $\vec{d}$ 上做的功为:
+\[
+W = \vec{F} \cdot \vec{d} = \norm{\vec{F}} \norm{\vec{d}} \cos\theta
+\]
+若力的方向与运动方向垂直, 则不做功!
+\end{practical}
+
+\begin{practical}
+\textbf{计算机图形学: 光照计算}
+
+表面反射的光强为:
+\[
+I = \max(0, \vec{n} \cdot \vec{l})
+\]
+其中 $\vec{n}$ 是表面法向量, $\vec{l}$ 是光照方向。
+\end{practical}
+
+\begin{practical}
+\textbf{文本相似度}
+
+要比较两篇文本文档, 把每篇转换为向量 (例如 TF-IDF), 再计算余弦相似度:
+\[
+\text{similarity} = \frac{\vv \cdot \vw}{\norm{\vv}\norm{\vw}} = \cos\theta
+\]
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+计算以下点积:
+\begin{enumerate}[label=(\alph*)]
+    \item $\twovec{1}{2} \cdot \twovec{3}{4}$
+    \item $\threevec{1}{-1}{2} \cdot \threevec{2}{3}{-1}$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+向量 $\va = \twovec{4}{3}$ 和 $\vb = \twovec{-3}{4}$ 正交吗?
+\end{exercise}
+
+\begin{exercise}
+求 $\vv = \twovec{3}{4}$ 在 $\vw = \twovec{1}{0}$ 上的投影。
+\end{exercise}
+
+\begin{exercise}
+计算向量 $\va = \twovec{1}{1}$ 与 $\vb = \twovec{1}{0}$ 之间的夹角。
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明对任何两个向量 $\vv$ 和 $\vw$:
+\[
+\norm{\vv + \vw}^2 = \norm{\vv}^2 + 2(\vv \cdot \vw) + \norm{\vw}^2
+\]
+\end{exercise}
+
+\begin{problem}
+一个大小为 $10$ 牛顿的力以与水平方向成 $60°$ 夹角作用在物体上。若物体水平移动了 $5$ 米, 做了多少功?
+\end{problem}

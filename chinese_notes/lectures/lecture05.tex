@@ -1,0 +1,295 @@
+% lecture05.tex - 逆矩阵、列空间与零空间
+% 第 5 章: 逆矩阵、列空间与零空间 (Inverse Matrices, Column Space, and Null Space)
+
+\chapter{逆矩阵、列空间与零空间}
+\label{ch:inverse}
+
+\begin{abstract}
+在本章中, 我们将学习逆矩阵 (inverse matrix)、线性方程组的求解, 以及与矩阵相关的重要空间 (列空间、零空间和秩)。
+\end{abstract}
+
+% ============================================
+\section{线性方程组}
+% ============================================
+
+\begin{definition}[方程组的矩阵形式]
+线性方程组:
+\[
+\system{
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2 \\
+&\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m
+}
+\]
+可以写成 $\mA\vx = \vb$。
+\end{definition}
+
+\begin{intuition}
+把方程 $\mA\vx = \vb$ 理解为:
+\begin{center}
+``哪个向量 $\vx$ 经过变换 $\mA$ 后会落到 $\vb$ 上?''
+\end{center}
+换句话说: 把变换 $\mA$``倒回去'', 从 $\vb$ 回到 $\vx$。
+\end{intuition}
+
+% ============================================
+\section{逆矩阵}
+% ============================================
+
+\begin{definition}[逆矩阵]
+若矩阵 $\mA\inv$ 满足:
+\[
+\mA\inv \mA = \mA \mA\inv = \mI
+\]
+则称它是矩阵 $\mA$ 的\vocab{逆 (inverse)}, 其中 $\mI$ 是单位矩阵。
+\end{definition}
+
+\begin{intuition}
+若 $\mA$ 是一个变换, 则 $\mA\inv$ 就是抵消 $\mA$ 效果的变换:
+\begin{itemize}
+    \item 若 $\mA$ 是旋转 $90°$, 则 $\mA\inv$ 是旋转 $-90°$
+    \item 若 $\mA$ 是放大 $2$ 倍, 则 $\mA\inv$ 是缩小为 $\frac{1}{2}$
+\end{itemize}
+\end{intuition}
+
+\begin{theorem}[用逆矩阵解方程组]
+若 $\mA$ 可逆, 则 $\mA\vx = \vb$ 的唯一解为:
+\[
+\vx = \mA\inv \vb
+\]
+\end{theorem}
+
+\subsection{二阶矩阵的求逆公式}
+
+\begin{theorem}
+若 $\mA = \twomat{a}{b}{c}{d}$ 且 $\det(\mA) \neq 0$:
+\[
+\mA\inv = \frac{1}{ad-bc} \twomat{d}{-b}{-c}{a}
+\]
+\end{theorem}
+
+\begin{example}
+\[
+\mA = \twomat{3}{1}{2}{4}, \quad \det(\mA) = 12 - 2 = 10
+\]
+\[
+\mA\inv = \frac{1}{10} \twomat{4}{-1}{-2}{3} = \twomat{0.4}{-0.1}{-0.2}{0.3}
+\]
+\end{example}
+
+% ============================================
+\section{逆何时存在}
+% ============================================
+
+\begin{theorem}
+矩阵 $\mA$ 可逆当且仅当 $\det(\mA) \neq 0$。
+\end{theorem}
+
+\begin{intuition}
+若 $\det(\mA) = 0$, 则变换 $\mA$ 会压缩空间 (例如把平面压成直线)。这样的变换不可逆---信息已经丢失了。
+
+这就像把几个数加起来: 只看总和, 无法恢复原来的每个数。
+\end{intuition}
+
+% ============================================
+\section{列空间}
+% ============================================
+
+\begin{definition}[列空间]
+矩阵 $\mA$ 的\vocab{列空间 (column space)}, 记为 $\Col(\mA)$, 是 $\mA$ 的各列张成的空间:
+\[
+\Col(\mA) = \spn\{\text{columns of } \mA\}
+\]
+\end{definition}
+
+\begin{intuition}
+列空间就是变换 $\mA$ 的所有可能输出组成的集合。
+
+问题``$\mA\vx = \vb$ 是否有解?''等价于``$\vb$ 是否在 $\mA$ 的列空间中?''
+\end{intuition}
+
+\begin{example}
+\[
+\mA = \twomat{1}{3}{2}{6}
+\]
+第二列是第一列的 $3$ 倍, 所以:
+\[
+\Col(\mA) = \spn\left\{\twovec{1}{2}\right\} = \text{一条过原点的直线}
+\]
+\end{example}
+
+% ============================================
+\section{零空间}
+% ============================================
+
+\begin{definition}[零空间]
+矩阵 $\mA$ 的\vocab{零空间 (null space)} (或核) 是所有被 $\mA$ 送到零向量的向量组成的集合:
+\[
+\Null(\mA) = \{\vx \mid \mA\vx = \vzero\}
+\]
+\end{definition}
+
+\begin{intuition}
+零空间就是被变换 $\mA$``压扁''到零的那些向量。
+
+若 $\det(\mA) \neq 0$: 只有零向量被压扁, 所以 $\Null(\mA) = \{\vzero\}$。
+
+若 $\det(\mA) = 0$: 整条直线或整个平面都被压缩到原点。
+\end{intuition}
+
+\begin{example}
+对矩阵 $\mA = \twomat{1}{2}{2}{4}$:
+
+解 $\mA\vx = \vzero$:
+\[
+\twomat{1}{2}{2}{4}\twovec{x}{y} = \twovec{0}{0}
+\]
+方程为: $x + 2y = 0$, 所以 $x = -2y$。
+
+零空间为: $\Null(\mA) = \left\{ t\twovec{-2}{1} \mid t \in \R \right\}$ (一条直线)
+\end{example}
+
+% ============================================
+\section{秩}
+% ============================================
+
+\begin{definition}[秩]
+矩阵 $\mA$ 的\vocab{秩 (rank)}等于:
+\begin{itemize}
+    \item 列空间的维数
+    \item 线性无关的列的个数
+    \item 线性无关的行的个数
+\end{itemize}
+\[
+\rank(\mA) = \dim(\Col(\mA))
+\]
+\end{definition}
+
+\begin{theorem}[秩---零化度定理]
+对 $m \times n$ 矩阵:
+\[
+\rank(\mA) + \dim(\Null(\mA)) = n
+\]
+(即列的个数)
+\end{theorem}
+
+\begin{intuition}
+秩就是变换保留下来的维数。
+
+$\dim(\Null(\mA))$ 就是丢失掉的维数。
+
+两者之和等于输入空间的维数。
+\end{intuition}
+
+% ============================================
+\section{非方阵}
+% ============================================
+
+\begin{definition}[不同维度之间的变换]
+$m \times n$ 矩阵表示从 $\R^n$ 到 $\R^m$ 的变换:
+\begin{itemize}
+    \item $m > n$: 从低维到高维的变换
+    \item $m < n$: 从高维到低维的变换
+\end{itemize}
+\end{definition}
+
+\begin{example}
+$2 \times 3$ 矩阵:
+\[
+\mA = \twomat{1}{0}{2}{0}{1}{-1}
+\]
+是从 $\Rthree$ 到 $\Rtwo$ 的变换。它把三维空间``投影''到一个平面上。
+\end{example}
+
+% ============================================
+\section{方程组解的不同情形}
+% ============================================
+
+\begin{theorem}[$\mA\vx = \vb$ 的分析]
+\begin{enumerate}
+    \item \textbf{唯一解:} 若 $\det(\mA) \neq 0$
+    \item \textbf{无穷多解:} 若 $\det(\mA) = 0$ 且 $\vb \in \Col(\mA)$
+    \item \textbf{无解:} 若 $\vb \notin \Col(\mA)$
+\end{enumerate}
+\end{theorem}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+    % 情形一: 唯一解
+    \begin{scope}[shift={(0,0)}]
+        \fill[blue!10] (-1.5,-1.5) rectangle (1.5,1.5);
+        \draw[axis] (-1.5,0) -- (1.5,0);
+        \draw[axis] (0,-1.5) -- (0,1.5);
+        \fill[red] (0.8,0.6) circle (2pt) node[above right] {$\vx$};
+        \node at (0,-2) {唯一解};
+        \node at (0,-2.5) {\small $\det \neq 0$};
+    \end{scope}
+
+    % 情形二: 无穷多解
+    \begin{scope}[shift={(5,0)}]
+        \draw[blue!30, very thick] (-1.5,-0.75) -- (1.5,0.75);
+        \draw[axis] (-1.5,0) -- (1.5,0);
+        \draw[axis] (0,-1.5) -- (0,1.5);
+        \node at (0,-2) {无穷多解};
+        \node at (0,-2.5) {\small $\det = 0$, $\vb \in \Col$};
+    \end{scope}
+
+    % 情形三: 无解
+    \begin{scope}[shift={(10,0)}]
+        \draw[blue!30, very thick] (-1.5,-0.75) -- (1.5,0.75);
+        \draw[axis] (-1.5,0) -- (1.5,0);
+        \draw[axis] (0,-1.5) -- (0,1.5);
+        \fill[red] (0.5,1.2) circle (2pt) node[right] {$\vb$};
+        \node[red] at (0.5,0.8) {$\times$};
+        \node at (0,-2) {无解};
+        \node at (0,-2.5) {\small $\vb \notin \Col$};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+计算以下矩阵的逆:
+\[
+\mA = \twomat{2}{5}{1}{3}
+\]
+\end{exercise}
+
+\begin{exercise}
+用逆矩阵解以下方程组:
+\[
+\system{
+2x + 3y &= 7 \\
+x + 2y &= 4
+}
+\]
+\end{exercise}
+
+\begin{exercise}
+求以下矩阵的零空间:
+\[
+\mA = \twomat{1}{-2}{-3}{6}
+\]
+\end{exercise}
+
+\begin{exercise}
+求以下矩阵的秩:
+\[
+\mA = \threemat{1}{2}{3}{2}{4}{6}{1}{1}{1}
+\]
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明 $(\mA\mB)\inv = \mB\inv\mA\inv$ (假设逆都存在)。
+\end{exercise}
+
+\begin{problem}
+$k$ 取何值时以下矩阵不可逆?
+\[
+\mA = \twomat{k}{2}{3}{k}
+\]
+\end{problem}

@@ -1,0 +1,448 @@
+% lecture01.tex - 向量简介
+% 第 1 章: 向量简介 (Introduction to Vectors)
+
+\chapter{向量简介}
+\label{ch:vectors}
+
+\begin{abstract}
+向量 (vector) 是线性代数的基本构件。在本章中, 我们将从三个不同的视角来认识向量: 物理视角、计算机科学视角和数学视角。我们还将学习向量加法 (vector addition) 与标量乘法 (scalar multiplication) 这两种基本运算。
+\end{abstract}
+
+% ============================================
+\section{看待向量的三种视角}
+% ============================================
+
+向量 (vector) 这个概念在不同学科中有着不同的含义。理解这三种视角有助于我们形成对向量的完整认识。
+
+% -------------------------------------------
+\subsection{物理视角}
+% -------------------------------------------
+
+\begin{definition}[物理视角下的向量]
+向量是空间中的一支\vocab{箭头 (arrow)}, 由两个属性决定:
+\begin{enumerate}
+    \item \textbf{长度 (length/magnitude)}
+    \item \textbf{方向 (direction)}
+\end{enumerate}
+只要这两个属性不变, 向量可以在空间中任意平移, 仍被视为同一个向量。
+\end{definition}
+
+\begin{intuition}
+在纸上画一支箭头, 现在把它平移到另一个位置, 不旋转也不改变大小。从物理学家的角度看, 这仍然是同一个向量!
+
+例如, 苹果所受的重力始终竖直向下, 大小恒定---无论苹果在房间的哪个位置。
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 画出同一个向量的多个副本
+    \draw[vector, blue!70, very thick] (0,0) -- (2,1) node[midway, above] {$\vv$};
+    \draw[vector, blue!70, very thick] (3,1) -- (5,2) node[midway, above] {$\vv$};
+    \draw[vector, blue!70, very thick] (-1,2) -- (1,3) node[midway, above] {$\vv$};
+
+    % 注释
+    \node at (2,-0.5) {\small 这些都是同一个向量};
+\end{tikzpicture}
+\end{center}
+
+% -------------------------------------------
+\subsection{计算机科学视角}
+% -------------------------------------------
+
+\begin{definition}[计算机科学视角下的向量]
+向量是\vocab{有序数表 (ordered list of numbers)}。例如:
+\[
+\vv = \twovec{3}{-2}
+\]
+在这种视角下, ``向量 (vector)''几乎就是``数表 (list)''的同义词。
+\end{definition}
+
+\begin{practical}
+\textbf{例: 房价模型}
+
+假设我们想用两个特征来描述房子:
+\begin{itemize}
+    \item 面积 (平方米)
+    \item 价格 (千美元)
+\end{itemize}
+
+每栋房子就是一个二维向量:
+\[
+\text{House}_1 = \twovec{85}{250}, \quad
+\text{House}_2 = \twovec{120}{420}, \quad
+\text{House}_3 = \twovec{65}{180}
+\]
+
+\textbf{重点:} 数字的顺序很重要! $\twovec{85}{250}$ 与 $\twovec{250}{85}$ 是不同的向量。
+\end{practical}
+
+% -------------------------------------------
+\subsection{数学视角}
+% -------------------------------------------
+
+\begin{definition}[数学视角下的向量]
+数学家对向量作了抽象定义: 向量是任何可以进行以下两种运算的对象:
+\begin{enumerate}
+    \item \textbf{两个向量相加 (add two vectors)}
+    \item \textbf{向量乘以一个数, 即标量乘法 (scalar multiplication)}
+\end{enumerate}
+我们将在最后一章 (抽象向量空间) 中详细探讨这一定义。
+\end{definition}
+
+\begin{important}
+在本课程中, 我们把向量可视化为\vocab{坐标系中以原点 (origin) 为起点}的一支\textbf{箭头}。这种几何视角有助于我们更深刻地理解各种概念。
+\end{important}
+
+% ============================================
+\section{坐标系与向量的表示}
+% ============================================
+
+\begin{definition}[二维笛卡尔坐标系 (Cartesian coordinate system)]
+一个坐标系由以下部分组成:
+\begin{itemize}
+    \item 水平轴: \vocab{$x$ 轴 ($x$-axis)}
+    \item 竖直轴: \vocab{$y$ 轴 ($y$-axis)}
+    \item 两轴交点: \vocab{原点 (origin)}
+\end{itemize}
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+    % 网格
+    \draw[grid] (-0.5,-0.5) grid (4.5,3.5);
+
+    % 坐标轴
+    \draw[axis, thick] (-0.5,0) -- (4.5,0) node[right] {$x$};
+    \draw[axis, thick] (0,-0.5) -- (0,3.5) node[above] {$y$};
+
+    % 原点标记
+    \node[below left] at (0,0) {O};
+
+    % 刻度
+    \foreach \x in {1,2,3,4} {
+        \draw (\x,0.1) -- (\x,-0.1) node[below] {\small $\x$};
+    }
+    \foreach \y in {1,2,3} {
+        \draw (0.1,\y) -- (-0.1,\y) node[left] {\small $\y$};
+    }
+
+    % 向量
+    \draw[vector, blue!70, ultra thick] (0,0) -- (3,2);
+    \node[above right, blue!70!black] at (3,2) {$\vv = \twovec{3}{2}$};
+
+    % 显示坐标的虚线
+    \draw[dashed, red!70] (3,0) -- (3,2);
+    \draw[dashed, red!70] (0,2) -- (3,2);
+
+    % 坐标标记
+    \node[below, red!70!black] at (3,0) {$3$};
+    \node[left, red!70!black] at (0,2) {$2$};
+\end{tikzpicture}
+\end{center}
+
+\begin{definition}[向量的坐标 (coordinates)]
+向量的\vocab{坐标}是一对数字, 描述了从原点走到向量箭头终点的方法:
+\begin{itemize}
+    \item 第一个数: 沿 $x$ 轴走多远 (向右为正, 向左为负)
+    \item 第二个数: 沿 $y$ 轴走多远 (向上为正, 向下为负)
+\end{itemize}
+\end{definition}
+
+\begin{intuition}
+坐标 $\twovec{3}{2}$ 的意思是:
+\begin{enumerate}
+    \item 从原点出发, 先向右走 3 个单位
+    \item 再向上走 2 个单位
+    \item 向量的箭头终点就在这里!
+\end{enumerate}
+\end{intuition}
+
+% ============================================
+\section{三维空间}
+% ============================================
+
+\begin{definition}[三维向量 (three-dimensional vector)]
+在三维空间中, 增加了一条同时垂直于 $x$ 轴和 $y$ 轴的\vocab{$z$ 轴 ($z$-axis)}。每个向量由三个数确定:
+\[
+\vv = \threevec{a}{b}{c}
+\]
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 三维坐标轴
+    \draw[axis, thick] (0,0) -- (3,0) node[right] {$x$};
+    \draw[axis, thick] (0,0) -- (0,3) node[above] {$z$};
+    \draw[axis, thick] (0,0) -- (-1.5,-1) node[below left] {$y$};
+
+    % 向量
+    \draw[vector, blue!70, ultra thick] (0,0) -- (2,1.5);
+    \draw[vector, green!60!black, ultra thick] (0,0) -- (-0.8,-0.5);
+
+    % 标记
+    \node[above right, blue!70!black] at (2,1.5) {$\threevec{2}{0}{1.5}$};
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{向量加法}
+% ============================================
+
+\begin{definition}[两向量相加---几何方法]
+将两个向量 $\va$ 与 $\vb$ 相加:
+\begin{enumerate}
+    \item 先画出向量 $\va$
+    \item 把向量 $\vb$ 平移, 使它的起点落在 $\va$ 的终点上
+    \item 和向量就是从原点 ($\va$ 的起点) 指向 $\vb$ 终点的向量
+\end{enumerate}
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.3]
+    % 网格
+    \draw[grid] (-0.5,-0.5) grid (5.5,3.5);
+
+    % 坐标轴
+    \draw[axis] (-0.5,0) -- (5.5,0);
+    \draw[axis] (0,-0.5) -- (0,3.5);
+
+    % 向量 a
+    \draw[vector, red!70, very thick] (0,0) -- (2,1) node[midway, below] {$\va$};
+
+    % 平移后的向量 b
+    \draw[vector, blue!70, very thick] (2,1) -- (4,3) node[midway, right] {$\vb$};
+
+    % 和向量
+    \draw[vector, purple!70, ultra thick] (0,0) -- (4,3) node[midway, above left] {$\va + \vb$};
+
+    % 原始的 b (虚线)
+    \draw[vector, blue!40, dashed] (0,0) -- (2,2) node[midway, left] {\small $\vb$};
+\end{tikzpicture}
+\end{center}
+
+\begin{definition}[两向量相加---代数方法]
+若 $\va = \twovec{a_1}{a_2}$, $\vb = \twovec{b_1}{b_2}$:
+\[
+\va + \vb = \twovec{a_1 + b_1}{a_2 + b_2}
+\]
+即把对应分量分别相加。
+\end{definition}
+
+\begin{example}
+\[
+\twovec{1}{2} + \twovec{3}{-1} = \twovec{1+3}{2+(-1)} = \twovec{4}{1}
+\]
+\end{example}
+
+\begin{intuition}
+向量加法可以理解为\textbf{沿路径行走}:
+\begin{itemize}
+    \item 先沿向量 $\va$ 走一段
+    \item 再沿向量 $\vb$ 走一段
+    \item 最终效果与直接沿 $\va + \vb$ 走相同
+\end{itemize}
+
+就像走路: 先向右走 2 步, 再向右走 5 步, 等同于直接向右走 7 步。
+\end{intuition}
+
+\begin{practical}
+\textbf{例: 风中的飞机速度}
+
+一架飞机以 $\twovec{500}{0}$ km/h 向东飞行 ($x$ 正方向)。风以 $\twovec{0}{50}$ km/h 向北吹 ($y$ 正方向)。
+
+飞机相对地面的实际速度为:
+\[
+\vv_{\text{actual}} = \twovec{500}{0} + \twovec{0}{50} = \twovec{500}{50}
+\]
+
+飞机既向东飞, 又略微向北偏移。
+\end{practical}
+
+% ============================================
+\section{标量乘法}
+% ============================================
+
+\begin{definition}[数乘向量]
+用一个数 (标量, scalar) $c$ 乘以向量 $\vv$, 就是把向量\vocab{缩放 (scale)} $c$ 倍:
+\[
+c \cdot \twovec{v_1}{v_2} = \twovec{c \cdot v_1}{c \cdot v_2}
+\]
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+    % 原向量
+    \draw[vector, blue!70, very thick] (0,0) -- (1.5,1) node[right] {$\vv$};
+
+    % 缩放后的向量
+    \draw[vector, green!60!black, very thick] (3,0) -- (6,2) node[right] {$2\vv$};
+    \draw[vector, orange!70, very thick] (8,0) -- (8.75,0.5) node[right] {$\frac{1}{2}\vv$};
+    \draw[vector, red!70, very thick] (11,0) -- (8.3,-1.8) node[below] {$-1.8\vv$};
+
+    % 下方标记
+    \node at (0.75,-0.5) {\small 原向量};
+    \node at (4.5,-0.5) {\small 拉伸};
+    \node at (8.4,-0.5) {\small 压缩};
+    \node at (9.7,-2.3) {\small 反向并拉伸};
+\end{tikzpicture}
+\end{center}
+
+\begin{important}
+标量乘法的效果:
+\begin{itemize}
+    \item $c > 1$: 向量被\textbf{拉伸 (stretched)}
+    \item $0 < c < 1$: 向量被\textbf{压缩 (compressed)}
+    \item $c < 0$: 向量先\textbf{反向 (reversed)}, 再缩放
+    \item $c = 0$: 向量变为零向量
+    \item $c = 1$: 向量不变
+\end{itemize}
+\end{important}
+
+\begin{warning}
+若 $c < 0$, 向量不仅大小改变, \textbf{方向也会反转}!
+\end{warning}
+
+\begin{example}
+若 $\vv = \twovec{4}{-2}$:
+\begin{align*}
+2\vv &= \twovec{8}{-4} & &\text{(变为两倍)} \\
+-\vv &= \twovec{-4}{2} & &\text{(反向)} \\
+\frac{1}{2}\vv &= \twovec{2}{-1} & &\text{(变为一半)}
+\end{align*}
+\end{example}
+
+\begin{definition}[标量 (scalar)]
+在线性代数中, 与向量相乘的数称为\vocab{标量}。这个名字来自动词``缩放 (to scale)''。``标量 (scalar)''本质上就是``数''的同义词。
+\end{definition}
+
+% ============================================
+\section{基向量}
+% ============================================
+
+\begin{definition}[$\Rtwo$ 中的标准基向量 (standard basis vectors)]
+两个标准基向量为:
+\[
+\vi = \twovec{1}{0} \quad \text{和} \quad \vj = \twovec{0}{1}
+\]
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=2]
+    % 网格
+    \draw[grid] (-0.5,-0.5) grid (2.5,2.5);
+
+    % 坐标轴
+    \draw[axis] (-0.5,0) -- (2.5,0) node[right] {$x$};
+    \draw[axis] (0,-0.5) -- (0,2.5) node[above] {$y$};
+
+    % 基向量
+    \draw[basis, -{Stealth[length=4mm]}] (0,0) -- (1,0) node[below right] {$\vi$};
+    \draw[basis, -{Stealth[length=4mm]}] (0,0) -- (0,1) node[above left] {$\vj$};
+
+    % 一般向量
+    \draw[vector, blue!70, very thick] (0,0) -- (2,1.5);
+    \node[above right, blue!70!black] at (2,1.5) {$\vv = 2\vi + 1.5\vj$};
+
+    % 分量
+    \draw[dashed, orange] (0,0) -- (2,0) node[midway, below] {$2\vi$};
+    \draw[dashed, orange] (2,0) -- (2,1.5) node[midway, right] {$1.5\vj$};
+\end{tikzpicture}
+\end{center}
+
+\begin{theorem}
+$\Rtwo$ 中的任何向量都可以写成基向量的线性组合 (linear combination):
+\[
+\twovec{a}{b} = a\vi + b\vj = a\twovec{1}{0} + b\twovec{0}{1}
+\]
+\end{theorem}
+
+\begin{intuition}
+当我们写 $\twovec{3}{2}$ 时, 实际是在说:
+\begin{center}
+``取 3 个 $\vi$, 再取 2 个 $\vj$, 然后把它们加起来''
+\end{center}
+即:
+\[
+\twovec{3}{2} = 3\vi + 2\vj = 3\twovec{1}{0} + 2\twovec{0}{1}
+\]
+\end{intuition}
+
+% ============================================
+\section{三种视角的联系}
+% ============================================
+
+\begin{summary}
+\textbf{线性代数的威力}在于不同视角之间的转换:
+\begin{itemize}
+    \item \textbf{数据分析师:} 可以把很长的数表看作空间中的向量
+    \item \textbf{物理学家:} 可以用数字来描述运动和力
+    \item \textbf{图形程序员:} 可以用矩阵实现几何变换
+\end{itemize}
+\end{summary}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+在坐标系中画出以下向量:
+\[
+\va = \twovec{3}{1}, \quad \vb = \twovec{-2}{4}, \quad \vc = \twovec{0}{-3}
+\]
+\end{exercise}
+
+\begin{exercise}
+计算以下向量的和与差:
+\[
+\va = \twovec{2}{5}, \quad \vb = \twovec{-1}{3}
+\]
+\begin{enumerate}[label=(\alph*)]
+    \item $\va + \vb$
+    \item $\va - \vb$
+    \item $2\va + 3\vb$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+若 $\vv = \twovec{4}{-2}$, 计算并画出以下向量:
+\begin{enumerate}[label=(\alph*)]
+    \item $2\vv$
+    \item $-\vv$
+    \item $\frac{1}{2}\vv$
+    \item $-2.5\vv$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[应用]
+一艘船以 30 km/h 向北航行, 水流以 10 km/h 向东流动。船相对岸的实际速度是多少?
+\end{exercise}
+
+\begin{exercise}
+证明对任何向量 $\vv$:
+\[
+\vv + (-\vv) = \vzero
+\]
+其中 $\vzero = \twovec{0}{0}$ 是零向量 (zero vector)。
+\end{exercise}
+
+\begin{exercise}
+证明向量加法满足交换律 (commutative):
+\[
+\va + \vb = \vb + \va
+\]
+\end{exercise}
+
+\begin{exercise}[挑战]
+给定三点 $A(1,2)$, $B(4,6)$ 和 $C(7,2)$。证明这三点构成一个等腰三角形。
+
+\textit{提示: 向量 $\twovec{a}{b}$ 的长度等于 $\sqrt{a^2 + b^2}$。}
+\end{exercise}
+
+\begin{problem}
+在三维空间中, 给定向量 $\vv = \threevec{2}{3}{-1}$。计算:
+\begin{enumerate}[label=(\alph*)]
+    \item $3\vv$
+    \item $\vv + \threevec{1}{-1}{2}$
+    \item $-\frac{1}{2}\vv$
+\end{enumerate}
+\end{problem}

@@ -1,0 +1,324 @@
+% lecture03.tex - 线性变换与矩阵
+% 第 3 章: 线性变换与矩阵
+
+\chapter{线性变换与矩阵}
+\label{ch:transformations}
+
+\begin{abstract}
+线性变换 (linear transformation) 是线性代数的核心。在本章中, 我们将学习任何线性变换都可以用一个矩阵 (matrix) 来表示, 以及矩阵乘法与变换复合之间的关系。
+\end{abstract}
+
+% ============================================
+\section{什么是变换?}
+% ============================================
+
+\begin{definition}[变换 (transformation)]
+\vocab{变换}是一个把向量变成另一个向量的函数:
+\[
+T: \Rtwo \to \Rtwo
+\]
+每个输入向量都被映射到一个输出向量。
+\end{definition}
+
+\begin{intuition}
+我们用``变换''而不用``函数'', 是因为我们想强调\textbf{运动}。想象空间中的每个向量都被``移动''到了新的位置。
+
+再想象坐标系的网格线。变换会拉伸、压缩、旋转这些网格, 或以其他方式改变它们。
+\end{intuition}
+
+% ============================================
+\section{线性变换}
+% ============================================
+
+\begin{definition}[线性变换 (linear transformation)]
+变换 $T$ 是\vocab{线性变换}, 当且仅当以下两个条件成立:
+\begin{enumerate}
+    \item \textbf{可加性:} $T(\vv + \vw) = T(\vv) + T(\vw)$
+    \item \textbf{齐次性:} $T(c\vv) = c \cdot T(\vv)$
+\end{enumerate}
+其中 $\vv, \vw$ 为任意向量, $c$ 为任意标量。
+\end{definition}
+
+\begin{intuition}
+线性变换可以从两个几何性质来识别:
+\begin{enumerate}
+    \item \textbf{直线变换后仍是直线} (不会变弯)
+    \item \textbf{原点保持不动}
+\end{enumerate}
+
+如果变换后网格线仍然平行且等距, 那它就是线性的。
+\end{intuition}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    % 原网格
+    \begin{scope}[shift={(0,0)}]
+        \draw[grid] (-2,-2) grid (2,2);
+        \draw[axis] (-2,0) -- (2,0);
+        \draw[axis] (0,-2) -- (0,2);
+        \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (1,0) node[below] {$\vi$};
+        \draw[basis, -{Stealth[length=3mm]}] (0,0) -- (0,1) node[left] {$\vj$};
+        \node at (0,-3) {变换前};
+    \end{scope}
+
+    % 箭头
+    \draw[-{Stealth[length=5mm]}, very thick] (3,0) -- (5,0) node[midway, above] {$T$};
+
+    % 变换后的网格 (错切)
+    \begin{scope}[shift={(8,0)}]
+        \draw[blue!30, thin] (-2,-2) -- (0,2) -- (4,2) -- (2,-2) -- cycle;
+        \foreach \y in {-1,0,1} {
+            \draw[blue!30, thin] ({-2+\y},-2) -- ({\y+2},2);
+        }
+        \foreach \x in {-2,-1,0,1,2} {
+            \draw[blue!30, thin] ({\x-1},-2) -- ({\x+1},2);
+        }
+        \draw[axis] (-2,0) -- (4,0);
+        \draw[axis] (0,-2) -- (2,2);
+        \draw[transformed, -{Stealth[length=3mm]}, very thick] (0,0) -- (1,0) node[below] {$T(\vi)$};
+        \draw[transformed, -{Stealth[length=3mm]}, very thick] (0,0) -- (1,1) node[above left] {$T(\vj)$};
+        \node at (1,-3) {变换后};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+% ============================================
+\section{线性变换的矩阵}
+% ============================================
+
+\begin{theorem}[基本定理]
+每个线性变换 $T: \Rtwo \to \Rtwo$ 完全由 $T$ 把基向量 (basis) $\vi$ 与 $\vj$ 送到哪里决定。
+\end{theorem}
+
+\begin{proof}
+任何向量 $\vv = \twovec{x}{y}$ 都可以写成: $\vv = x\vi + y\vj$
+
+利用线性性质:
+\[
+T(\vv) = T(x\vi + y\vj) = xT(\vi) + yT(\vj)
+\]
+因此只要知道 $T(\vi)$ 与 $T(\vj)$, 就能算出任何 $\vv$ 的 $T(\vv)$。
+\end{proof}
+
+\begin{definition}[变换矩阵 (transformation matrix)]
+若 $T(\vi) = \twovec{a}{c}$, $T(\vj) = \twovec{b}{d}$, 则 $T$ 的\vocab{变换矩阵}为:
+\[
+\mA = \twomat{a}{b}{c}{d}
+\]
+第一列是 $\vi$ 的落点, 第二列是 $\vj$ 的落点。
+\end{definition}
+
+\begin{important}
+\textbf{黄金法则:} 矩阵的列向量 (column vector) = 基向量的落点
+\end{important}
+
+% ============================================
+\section{矩阵与向量相乘}
+% ============================================
+
+\begin{definition}[矩阵乘以向量]
+\[
+\twomat{a}{b}{c}{d} \twovec{x}{y} = x\twovec{a}{c} + y\twovec{b}{d} = \twovec{ax + by}{cx + dy}
+\]
+\end{definition}
+
+\begin{intuition}
+矩阵乘以向量意味着:
+\begin{enumerate}
+    \item 把输入的 $x$ 分量乘以第一列
+    \item 把输入的 $y$ 分量乘以第二列
+    \item 把结果加起来
+\end{enumerate}
+这正是新基向量的线性组合!
+\end{intuition}
+
+\begin{example}
+逆时针旋转 $90°$:
+\[
+T(\vi) = \twovec{0}{1}, \quad T(\vj) = \twovec{-1}{0}
+\]
+于是旋转矩阵为:
+\[
+\mR = \twomat{0}{-1}{1}{0}
+\]
+验证: $\mR\twovec{1}{0} = \twovec{0}{1}$ \checkmark
+\end{example}
+
+% ============================================
+\section{重要变换举例}
+% ============================================
+
+\subsection{旋转}
+
+\begin{definition}[旋转矩阵]
+逆时针旋转 $\theta$ 角:
+\[
+\mR_\theta = \twomat{\cos\theta}{-\sin\theta}{\sin\theta}{\cos\theta}
+\]
+\end{definition}
+
+\begin{example}
+旋转 $45°$:
+\[
+\mR_{45°} = \twomat{\frac{\sqrt{2}}{2}}{-\frac{\sqrt{2}}{2}}{\frac{\sqrt{2}}{2}}{\frac{\sqrt{2}}{2}}
+\]
+\end{example}
+
+\subsection{缩放}
+
+\begin{definition}[缩放矩阵]
+沿 $x$ 轴缩放 $s_x$ 倍、沿 $y$ 轴缩放 $s_y$ 倍:
+\[
+\mS = \twomat{s_x}{0}{0}{s_y}
+\]
+\end{definition}
+
+\begin{practical}
+\textbf{在计算机图形学中的应用:} 要放大或缩小一幅图像:
+\begin{itemize}
+    \item $s_x = s_y = 2$: 图像变为原来的两倍
+    \item $s_x = 1, s_y = 0.5$: 图像在竖直方向被压缩
+\end{itemize}
+\end{practical}
+
+\subsection{错切}
+
+\begin{definition}[水平错切矩阵]
+\[
+\mH = \twomat{1}{k}{0}{1}
+\]
+其中 $k$ 为错切量。
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+    % 原图形
+    \begin{scope}[shift={(0,0)}]
+        \draw[fill=blue!20] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+        \draw[basis] (0,0) -- (1,0) node[midway, below] {$\vi$};
+        \draw[basis] (0,0) -- (0,1) node[midway, left] {$\vj$};
+        \node at (0.5,-0.7) {原图形};
+    \end{scope}
+
+    % 错切后
+    \begin{scope}[shift={(4,0)}]
+        \draw[fill=blue!20] (0,0) -- (1,0) -- (2,1) -- (1,1) -- cycle;
+        \draw[transformed, very thick] (0,0) -- (1,0) node[midway, below] {$T(\vi)$};
+        \draw[transformed, very thick] (0,0) -- (1,1) node[midway, left] {$T(\vj)$};
+        \node at (1,-0.7) {错切 ($k=1$)};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\subsection{反射}
+
+\begin{example}
+关于 $x$ 轴的反射:
+\[
+\twomat{1}{0}{0}{-1}
+\]
+
+关于直线 $y = x$ 的反射:
+\[
+\twomat{0}{1}{1}{0}
+\]
+\end{example}
+
+% ============================================
+\section{矩阵乘法即变换的复合}
+% ============================================
+
+\begin{theorem}[变换的复合]
+若 $\mA$ 是变换 $T_1$ 的矩阵, $\mB$ 是变换 $T_2$ 的矩阵, 则:
+\[
+\mB \cdot \mA = \text{矩阵 } (T_2 \circ T_1)
+\]
+即先做 $T_1$, 再做 $T_2$。
+\end{theorem}
+
+\begin{warning}
+顺序很重要! 一般来说 $\mA\mB \neq \mB\mA$。
+
+先旋转再错切 $\neq$ 先错切再旋转
+\end{warning}
+
+\begin{definition}[矩阵乘法 (matrix multiplication)]
+\[
+\twomat{a}{b}{c}{d} \twomat{e}{f}{g}{h} = \twomat{ae+bg}{af+bh}{ce+dg}{cf+dh}
+\]
+\end{definition}
+
+\begin{intuition}
+计算 $\mB\mA$ 的列:
+\begin{itemize}
+    \item 第一列: $\mB$ 乘以 $\mA$ 的第一列 = $\vi$ 经过两次变换后的落点
+    \item 第二列: $\mB$ 乘以 $\mA$ 的第二列 = $\vj$ 经过两次变换后的落点
+\end{itemize}
+\end{intuition}
+
+\begin{example}
+旋转 $90°$ 后再错切:
+\[
+\underbrace{\twomat{1}{1}{0}{1}}_{\text{错切}} \underbrace{\twomat{0}{-1}{1}{0}}_{\text{旋转}} = \twomat{1}{-1}{1}{0}
+\]
+
+验证: $\vi \to \twovec{0}{1} \to \twovec{1}{1}$ \checkmark
+\end{example}
+
+% ============================================
+\section{实际应用}
+% ============================================
+
+\begin{practical}
+\textbf{计算机图形学与电子游戏}
+
+游戏中的每个物体都由一组向量 (顶点) 描述。要移动、旋转或缩放一个物体, 只需把所有顶点乘以相应的矩阵。
+
+一段动画 = 一连串矩阵乘法
+\end{practical}
+
+\begin{practical}
+\textbf{图像处理}
+
+模糊、锐化、边缘检测等图像滤波器都是用矩阵乘法实现的。
+\end{practical}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+写出把 $\vi$ 送到 $\twovec{2}{1}$、把 $\vj$ 送到 $\twovec{-1}{3}$ 的变换的矩阵。
+\end{exercise}
+
+\begin{exercise}
+计算以下乘积:
+\[
+\twomat{1}{2}{3}{4} \twovec{5}{6}
+\]
+\end{exercise}
+
+\begin{exercise}
+写出旋转 $180°$ 的矩阵, 并证明它等于 $-\mI$。
+\end{exercise}
+
+\begin{exercise}
+把以下两个矩阵按两种顺序相乘, 并证明 $\mA\mB \neq \mB\mA$:
+\[
+\mA = \twomat{1}{2}{0}{1}, \quad \mB = \twomat{0}{1}{1}{0}
+\]
+\end{exercise}
+
+\begin{exercise}[挑战]
+求关于直线 $y = 2x$ 的反射矩阵。
+
+\textit{提示: 这条直线与 $x$ 轴的夹角为 $\arctan(2)$。}
+\end{exercise}
+
+\begin{problem}
+证明: 旋转 $\alpha$ 角后再旋转 $\beta$ 角, 等于旋转 $\alpha + \beta$ 角。
+\end{problem}
+
+\begin{problem}
+若 $\mA^2 = \mA$ (即 $\mA$ 为投影矩阵), 它的几何意义是什么?
+\end{problem}

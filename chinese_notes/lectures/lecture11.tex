@@ -1,0 +1,218 @@
+% lecture11.tex - 特征值计算与特征基
+% 第 11 章: 特征值计算与特征基
+
+\chapter{特征值计算与特征基}
+\label{ch:eigenbasis}
+
+\begin{abstract}
+在本章中, 我们将学习计算 $2 \times 2$ 矩阵特征值的快捷方法, 并熟悉特征基 (eigenbasis) 与对角化的概念。
+\end{abstract}
+
+% ============================================
+\section{$2 \times 2$ 矩阵的快捷算法}
+% ============================================
+
+\begin{theorem}[快捷公式]
+对于矩阵 $\mA = \twomat{a}{b}{c}{d}$:
+
+\textbf{特征值之和:}
+\[
+\lambda_1 + \lambda_2 = a + d = \tr(\mA)
+\]
+
+\textbf{特征值之积:}
+\[
+\lambda_1 \cdot \lambda_2 = ad - bc = \det(\mA)
+\]
+\end{theorem}
+
+\begin{intuition}
+已知 $m = \lambda_1 + \lambda_2$ 与 $p = \lambda_1 \lambda_2$, 可求出 $\lambda_{1,2}$:
+\[
+\lambda = \frac{m}{2} \pm \sqrt{\left(\frac{m}{2}\right)^2 - p}
+\]
+或者: 找出和为 $m$、积为 $p$ 的两个数。
+\end{intuition}
+
+\begin{example}
+$\mA = \twomat{3}{1}{4}{1}$
+
+迹: $m = 3 + 1 = 4$
+
+行列式: $p = 3 - 4 = -1$
+
+特征值: 满足 $x + y = 4$ 且 $xy = -1$ 的两个数:
+\[
+\lambda = 2 \pm \sqrt{4 - (-1)} = 2 \pm \sqrt{5}
+\]
+\end{example}
+
+% ============================================
+\section{特征基}
+% ============================================
+
+\begin{definition}[特征基]
+若矩阵的特征向量可以构成一组\vocab{基 (basis)} (即有 $n$ 个线性无关 (linear independence) 的特征向量), 则该基称为\vocab{特征基 (eigenbasis)}。
+\end{definition}
+
+\begin{theorem}
+在特征基下, 变换矩阵变为\vocab{对角的 (diagonal)}:
+\[
+[\mA]_{\text{eigenbasis}} = \mD = \threemat{\lambda_1}{0}{0}{0}{\lambda_2}{0}{0}{0}{\ddots}
+\]
+\end{theorem}
+
+\begin{intuition}
+为什么是对角的?
+
+在特征基下, 每个基向量只被缩放:
+\begin{align*}
+\mA \vv_1 &= \lambda_1 \vv_1 \to \text{第一列: } \threevec{\lambda_1}{0}{0} \\
+\mA \vv_2 &= \lambda_2 \vv_2 \to \text{第二列: } \threevec{0}{\lambda_2}{0}
+\end{align*}
+\end{intuition}
+
+% ============================================
+\section{对角化}
+% ============================================
+
+\begin{definition}[对角化]
+若矩阵 $\mA$ 可写为:
+\[
+\mA = \mP \mD \mP\inv
+\]
+其中 $\mD$ 为对角矩阵 (diagonal matrix), $\mP$ 为以特征向量为列的矩阵, 则称 $\mA$ \vocab{可对角化 (diagonalizable)}。
+\end{definition}
+
+\begin{theorem}[可对角化条件]
+$n \times n$ 矩阵可对角化当且仅当它有 $n$ 个线性无关的特征向量。
+\end{theorem}
+
+\begin{example}
+$\mA = \twomat{3}{1}{0}{2}$, 特征值为 $\lambda_1 = 3$, $\lambda_2 = 2$
+
+特征向量: $\vv_1 = \twovec{1}{0}$, $\vv_2 = \twovec{-1}{1}$
+
+\[
+\mP = \twomat{1}{-1}{0}{1}, \quad \mD = \twomat{3}{0}{0}{2}
+\]
+
+验证: $\mP\mD\mP\inv = \mA$ \checkmark
+\end{example}
+
+% ============================================
+\section{用对角化计算矩阵幂}
+% ============================================
+
+\begin{theorem}
+若 $\mA = \mP\mD\mP\inv$:
+\[
+\mA^n = \mP \mD^n \mP\inv
+\]
+而 $\mD^n$ 非常简单:
+\[
+\mD^n = \threemat{\lambda_1^n}{0}{0}{0}{\lambda_2^n}{0}{0}{0}{\ddots}
+\]
+\end{theorem}
+
+\begin{example}
+计算上一例中 $\mA^{100}$:
+\[
+\mA^{100} = \mP \twomat{3^{100}}{0}{0}{2^{100}} \mP\inv
+\]
+若不用对角化, 需要做 100 次矩阵乘法!
+\end{example}
+
+\begin{practical}
+\textbf{应用: 斐波那契数列}
+
+斐波那契数列: $F_{n+1} = F_n + F_{n-1}$
+
+矩阵形式:
+\[
+\twomat{1}{1}{1}{0}^n = \twomat{F_{n+1}}{F_n}{F_n}{F_{n-1}}
+\]
+
+利用对角化, 可得到闭式公式:
+\[
+F_n = \frac{1}{\sqrt{5}}\left[\left(\frac{1+\sqrt{5}}{2}\right)^n - \left(\frac{1-\sqrt{5}}{2}\right)^n\right]
+\]
+\end{practical}
+
+% ============================================
+\section{不可对角化的矩阵}
+% ============================================
+
+\begin{example}
+错切矩阵 $\mA = \twomat{1}{1}{0}{1}$:
+
+特征多项式: $(1-\lambda)^2 = 0$
+
+特征值: $\lambda = 1$ (重根)
+
+特征向量: 仅 $\twovec{1}{0}$ (一维)
+
+该矩阵不可对角化!
+\end{example}
+
+\begin{warning}
+重特征值本身不一定是问题。当独立特征向量的个数少于该特征值的重数时, 问题才会出现。
+\end{warning}
+
+% ============================================
+\section{对称矩阵}
+% ============================================
+
+\begin{theorem}[谱定理]
+对称矩阵 ($\mA = \mA\trans$):
+\begin{enumerate}
+    \item 有实特征值
+    \item 属于不同特征值的特征向量相互正交
+    \item 总可对角化 (且有一组正交基)
+\end{enumerate}
+\end{theorem}
+
+\begin{intuition}
+对称矩阵是``表现良好''的矩阵。它们总能化为对角形, 且特征向量相互垂直——就像椭圆的主轴一样。
+\end{intuition}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+用快捷公式求下列矩阵的特征值:
+\[
+\mA = \twomat{5}{2}{2}{2}
+\]
+\end{exercise}
+
+\begin{exercise}
+将矩阵 $\mA = \twomat{2}{1}{1}{2}$ 对角化。
+\end{exercise}
+
+\begin{exercise}
+利用对角化计算 $\mA^{10}$:
+\[
+\mA = \twomat{1}{1}{0}{2}
+\]
+\end{exercise}
+
+\begin{exercise}
+下列矩阵是否可对角化?
+\[
+\mA = \twomat{2}{1}{0}{2}
+\]
+\end{exercise}
+
+\begin{exercise}[挑战]
+证明 $\mA$ 与 $\mA\trans$ 有相同的特征值。
+\end{exercise}
+
+\begin{problem}
+兔子与狐狸的数量由下式建模:
+\[
+\twovec{R_{n+1}}{F_{n+1}} = \twomat{1.1}{-0.4}{0.2}{0.8}\twovec{R_n}{F_n}
+\]
+分析种群的长期行为。
+\end{problem}

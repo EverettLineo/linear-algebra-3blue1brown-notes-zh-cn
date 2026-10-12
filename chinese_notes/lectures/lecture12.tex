@@ -1,0 +1,273 @@
+% lecture12.tex - 抽象向量空间
+% 第 12 章: 抽象向量空间
+
+\chapter{抽象向量空间}
+\label{ch:abstract}
+
+\begin{abstract}
+在最后一章中, 我们把向量的概念推广到几何箭头之外。我们将看到, 函数、多项式乃至音乐都可以是``向量''——只要它们遵循线性代数的规则。
+\end{abstract}
+
+% ============================================
+\section{动机: 什么是向量?}
+% ============================================
+
+\begin{intuition}
+到目前为止, 我们把向量看作箭头或数表。但数学家追问了一个更深刻的问题:
+
+\textbf{``什么样的东西表现得像向量?''}
+
+答案: 凡是能相加、能与标量相乘的东西!
+\end{intuition}
+
+\begin{example}
+函数可以相加: $(f + g)(x) = f(x) + g(x)$
+
+函数可以与数相乘: $(cf)(x) = c \cdot f(x)$
+
+所以函数也可以是``向量''!
+\end{example}
+
+% ============================================
+\section{向量空间的正式定义}
+% ============================================
+
+\begin{definition}[向量空间]
+实数域 $\R$ 上的\vocab{向量空间 (vector space)}是一个集合 $V$, 带有两种运算:
+\begin{itemize}
+    \item \textbf{加法:} $+ : V \times V \to V$
+    \item \textbf{标量乘法:} $\cdot : \R \times V \to V$
+\end{itemize}
+且满足以下公理。
+\end{definition}
+
+\begin{theorem}[向量空间公理]
+对一切 $\vu, \vv, \vw \in V$ 与 $a, b \in \R$:
+
+\textbf{加法公理:}
+\begin{enumerate}
+    \item $\vu + \vv = \vv + \vu$ (交换律)
+    \item $(\vu + \vv) + \vw = \vu + (\vv + \vw)$ (结合律)
+    \item 单位元存在: $\exists \vzero : \vv + \vzero = \vv$
+    \item 逆元存在: $\forall \vv, \exists (-\vv) : \vv + (-\vv) = \vzero$
+\end{enumerate}
+
+\textbf{标量乘法公理:}
+\begin{enumerate}[resume]
+    \item $a(b\vv) = (ab)\vv$
+    \item $1 \cdot \vv = \vv$
+\end{enumerate}
+
+\textbf{分配律公理:}
+\begin{enumerate}[resume]
+    \item $a(\vu + \vv) = a\vu + a\vv$
+    \item $(a + b)\vv = a\vv + b\vv$
+\end{enumerate}
+\end{theorem}
+
+% ============================================
+\section{向量空间的例子}
+% ============================================
+
+\subsection{$\R^n$——标准空间}
+
+\begin{example}
+$\R^n = \{(x_1, x_2, \ldots, x_n) \mid x_i \in \R\}$, 按通常的加法与乘法运算。
+
+这正是我们此前一直在处理的空间。
+\end{example}
+
+\subsection{多项式空间}
+
+\begin{example}
+$\mathcal{P}_n$ = 次数不超过 $n$ 的多项式全体:
+\[
+p(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n
+\]
+
+加法: $(p + q)(x) = p(x) + q(x)$
+
+标量乘法: $(cp)(x) = c \cdot p(x)$
+
+零向量: $p(x) = 0$
+
+\textbf{基:} $\{1, x, x^2, \ldots, x^n\}$——空间维数为 $n + 1$
+\end{example}
+
+\subsection{函数空间}
+
+\begin{example}
+$C[a,b]$ = 区间 $[a,b]$ 上连续函数全体
+
+该空间是\textbf{无穷维}的!
+\end{example}
+
+\subsection{矩阵空间}
+
+\begin{example}
+$M_{m \times n}$ = 全体 $m \times n$ 矩阵
+
+加法: 按对应元相加
+
+标量乘法: 所有元都乘以该标量
+
+维数: $m \times n$
+\end{example}
+
+% ============================================
+\section{抽象线性变换}
+% ============================================
+
+\begin{definition}[空间之间的线性变换]
+函数 $T: V \to W$ 是\vocab{线性变换 (linear transformation)}, 如果:
+\begin{enumerate}
+    \item $T(\vu + \vv) = T(\vu) + T(\vv)$
+    \item $T(c\vv) = c \cdot T(\vv)$
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+\textbf{微分:} $D: \mathcal{P}_n \to \mathcal{P}_{n-1}$, $D(p) = p'$
+
+这是线性的, 因为 $(f + g)' = f' + g'$ 且 $(cf)' = cf'$。
+\end{example}
+
+\begin{example}
+\textbf{定积分:} $I: C[0,1] \to \R$, $I(f) = \int_0^1 f(x) dx$
+
+这是线性的, 因为 $\int(f+g) = \int f + \int g$ 且 $\int cf = c\int f$。
+\end{example}
+
+% ============================================
+\section{函数即无穷维向量}
+% ============================================
+
+\begin{intuition}
+函数 $f: [0, 2\pi] \to \R$ 可视为一个无穷维向量:
+\begin{itemize}
+    \item 每个点 $x$ 是一个``分量''
+    \item 函数值 $f(x)$ 就是该分量的取值
+\end{itemize}
+
+函数的内积:
+\[
+\langle f, g \rangle = \int_0^{2\pi} f(x) g(x) dx
+\]
+\end{intuition}
+
+\begin{practical}
+\textbf{傅里叶级数}
+
+正弦与余弦函数构成周期函数的``基'':
+\[
+f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} (a_n \cos nx + b_n \sin nx)
+\]
+
+系数 $a_n, b_n$ 就像该函数在这组基下的``坐标''!
+\end{practical}
+
+% ============================================
+\section{抽象为何重要?}
+% ============================================
+
+\begin{summary}
+\textbf{抽象的威力:}
+
+一旦某个对象是向量空间, \textbf{线性代数的所有工具}都适用:
+\begin{itemize}
+    \item 线性无关 (linear independence) 与线性相关
+    \item 基与维数
+    \item 线性变换与矩阵
+    \item 特征值与特征向量
+    \item 像空间与零空间
+\end{itemize}
+
+线性代数中的一条定理 = 对所有这些空间都成立的定理!
+\end{summary}
+
+\begin{practical}
+\textbf{量子力学}
+
+量子态构成向量空间 (希尔伯特空间)。物理算符是线性变换。测量值 = 特征值!
+\end{practical}
+
+\begin{practical}
+\textbf{信号处理}
+
+音频信号是函数空间中的向量。傅里叶变换是基变换。滤波器是线性变换。
+\end{practical}
+
+\begin{practical}
+\textbf{机器学习}
+
+数据是特征空间中的向量。线性模型是线性变换。降维 = 寻找更好的基。
+\end{practical}
+
+% ============================================
+\section{展望}
+% ============================================
+
+\begin{remark}
+本课程只是线性代数的入门。更深入的主题包括:
+\begin{itemize}
+    \item \textbf{二次型}与二次曲线的分类
+    \item \textbf{奇异值分解 (SVD)}——数据科学中的有力工具
+    \item \textbf{数值线性代数}——高效算法
+    \item \textbf{希尔伯特空间}——无穷维线性代数
+    \item \textbf{表示论}——群与线性代数
+\end{itemize}
+\end{remark}
+
+% ============================================
+\section{练习}
+% ============================================
+
+\begin{exercise}
+证明全体 $2 \times 2$ 对称矩阵构成一个向量空间。它的维数是多少?
+\end{exercise}
+
+\begin{exercise}
+满足 $p(0) = 1$ 的多项式全体是否为向量空间? 为什么?
+\end{exercise}
+
+\begin{exercise}
+证明微分 $D: \mathcal{P}_3 \to \mathcal{P}_2$ 是线性变换, 并在标准基下写出它的矩阵。
+\end{exercise}
+
+\begin{exercise}
+证明在任一向量空间中: $0 \cdot \vv = \vzero$
+\end{exercise}
+
+\begin{exercise}[挑战]
+考虑微分方程 $y'' + y = 0$ 的解空间。证明这是一个向量空间, 并求它的一组基。
+\end{exercise}
+
+\begin{problem}
+对于线性变换 $T: \mathcal{P}_2 \to \mathcal{P}_2$, $T(p) = p + p'$:
+\begin{enumerate}[label=(\alph*)]
+    \item 在基 $\{1, x, x^2\}$ 下写出 $T$ 的矩阵
+    \item 求特征值
+    \item 求特征多项式 (特征向量)
+\end{enumerate}
+\end{problem}
+
+% ============================================
+\section{课程总结}
+% ============================================
+
+\begin{summary}
+\textbf{线性代数的本质}
+
+我们从向量与矩阵出发, 最终抵达抽象空间。核心思想:
+
+\begin{enumerate}
+    \item \textbf{向量:} 具有加法与标量乘法的对象
+    \item \textbf{线性变换:} 保持直线不变的函数
+    \item \textbf{矩阵:} 线性变换的数值表示
+    \item \textbf{行列式:} 体积缩放因子
+    \item \textbf{特征值:} 只被缩放的特殊方向
+    \item \textbf{抽象:} 所有这些概念都超越箭头而成立
+\end{enumerate}
+
+线性代数是数学、物理学、工程学与计算机科学的共同语言。
+\end{summary}
